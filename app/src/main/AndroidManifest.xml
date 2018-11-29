@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="net.forevents.foreventsandroid">
+
+    <!-- Para habilitar el servicio de conexión a internet -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <!--
+     Con el atributo name indicamos cual es la actividad de inicio,
+    no siendo la que se va a presentar, pero si se ejecutal al comienzo
+    -->
+    <application
+            android:name=".presentation.UserApp"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+
+        <activity
+                android:name=".presentation.MainActivities.NucleusActivity"
+                android:label="@string/title_activity_nucleus_activity"
+                android:theme="@style/AppTheme.NoActionBar">
+
+
+        </activity>
+        <activity
+                android:name=".presentation.MainActivities.MainActivity"
+                android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+
+        </activity>
+        <activity
+                android:name=".presentation.SingUpLoginRecovery.LoginActivity"
+                android:theme="@style/TransparentCompat">
+        </activity>
+        <activity
+                android:name=".presentation.SingUpLoginRecovery.SingUpActivity"
+                android:theme="@style/EventsTheme">
+        </activity>
+        <activity
+                android:name=".presentation.EventList.EventListActivity"
+                android:theme="@style/TransparentCompat">
+        </activity>
+        <activity
+                android:name=".presentation.EventDetail.EventDetailFragment"
+                android:theme="@style/EventsTheme">
+        </activity>
+        <activity
+                android:name=".presentation.SingUpLoginRecovery.RecoveryPasswordActivity"
+                android:theme="@style/EventsTheme">
+        </activity>
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="@string/google_maps_key"/>
+
+        <activity
+                android:name=".Pruebas.PruebasMapa"
+                android:theme="@style/EventsTheme">
+
+            <!-- android:label="@string/title_activity_maps"> -->
+        </activity>
+
+        <!-- casca la carga de la activity de detalle sin la línea siguiente. Tiene que ver con el mapa. No se más -->
+        <uses-library
+                android:name="org.apache.http.legacy"
+                android:required="false"/>
+
+        <activity
+                android:name=".presentation.Calendar.CalendarActivity"
+                android:theme="@style/TransparentCompat">
+        </activity>
+
+        <!--
+FCM genera un ID de instancia, el cual utiliza como token de registro. Cuando se genere un ID de instancia,
+la biblioteca cargará el identificador y los datos de configuración en Firebase. Para evitar la autogeneración
+de ID de instancia, inhabilita FCM: agrega un valor de metadatos a tu AndroidManifest.xml:
+Para volver a habilitar FCM, realiza una llamada de tiempo de ejecución:
+
+FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        -->
+
+        <meta-data
+                android:name="firebase_messaging_auto_init_enabled"
+                android:value="false"/>
+        <meta-data android:name="preloaded_fonts" android:resource="@array/preloaded_fonts"/>
+
+        <service android:name=".FirebaseService.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+            <!--
+                 Set custom default icon. This is used when no icon is set for incoming notification messages.
+                 See README(https://goo.gl/l4GJaQ) for more.
+            -->
+            <meta-data
+                    android:name="com.google.firebase.messaging.default_notification_icon"
+                    android:resource="@mipmap/ic_launcher_round"/>
+            <!--
+                 Set color used with incoming notification messages. This is used when no color is set for the incoming
+                 notification message. See README(https://goo.gl/6BKBk7) for more.
+            -->
+            <meta-data
+                    android:name="com.google.firebase.messaging.default_notification_color"
+                    android:resource="@color/colorAccent"/>
+        </service>
+
+
+    </application>
+
+</manifest>
