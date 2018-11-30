@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_calendar.*
 import net.forevents.foreventsandroid.R
+import java.util.*
 
 
-class CalendarActivity : Fragment() {
+class CalendarEventsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,8 +24,10 @@ class CalendarActivity : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-
+        //val hoy : Date
+        //val cal = Calendar.getInstance()
+        //cal.add(Calendar.YEAR,1)
+        //calendar_events.
     }
    // }
 }

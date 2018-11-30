@@ -35,7 +35,7 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
     private lateinit var events:List<AppEvents>
 
     //Call to EventDetailFragment
-    override fun OnEventClicked(event: AppEvents) {
+    override fun onEventClicked(event: AppEvents) {
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.content_fragment,
@@ -187,6 +187,14 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
             .replace(
                 R.id.content_fragment,
                 FullMapFragment.newInstance(1,event)
+            ).commit()
+    }
+
+    fun openDetailScreen(event: AppEvents){
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.content_fragment,
+                EventDetailFragment.newInstance(event)
             ).commit()
     }
 

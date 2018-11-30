@@ -61,24 +61,23 @@ class EventDetailFragment : Fragment() ,OnMapReadyCallback,  GoogleMap.OnMarkerC
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        val view = inflater.inflate(R.layout.fragment_event_detail,container,false)
+        return inflater.inflate(R.layout.fragment_event_detail,container,false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         go_full_screen_map.setOnClickListener {
             (activity as NucleusActivity).openFullScreenMap(listOf<AppEvents>(event))
         }
-        return view
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         event = arguments?.getParcelable(EXTRA_EVENT) as AppEvents
         drawEvent(event)
         initMap()
-
     }
+
     private fun drawEvent(event: AppEvents?) {
         //Asignamos first_name a la caja de texto
         event?.let {

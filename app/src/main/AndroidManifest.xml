@@ -26,13 +26,10 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-
         <activity
                 android:name=".presentation.MainActivities.NucleusActivity"
                 android:label="@string/title_activity_nucleus_activity"
                 android:theme="@style/AppTheme.NoActionBar">
-
-
         </activity>
         <activity
                 android:name=".presentation.MainActivities.MainActivity"
@@ -42,8 +39,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
-
         </activity>
         <activity
                 android:name=".presentation.SingUpLoginRecovery.LoginActivity"
@@ -91,7 +86,7 @@
                 android:required="false"/>
 
         <activity
-                android:name=".presentation.Calendar.CalendarActivity"
+                android:name=".presentation.Calendar.CalendarEventsFragment"
                 android:theme="@style/TransparentCompat">
         </activity>
 
@@ -107,7 +102,9 @@ FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         <meta-data
                 android:name="firebase_messaging_auto_init_enabled"
                 android:value="false"/>
-        <meta-data android:name="preloaded_fonts" android:resource="@array/preloaded_fonts"/>
+        <meta-data
+                android:name="preloaded_fonts"
+                android:resource="@array/preloaded_fonts"/>
 
         <service android:name=".FirebaseService.MyFirebaseMessagingService">
             <intent-filter>
@@ -129,7 +126,14 @@ FirebaseMessaging.getInstance().setAutoInitEnabled(true);
                     android:resource="@color/colorAccent"/>
         </service>
 
-
+        <activity
+                android:name=".presentation.Settings.SettingsFragment"
+                android:label="@string/title_activity_settings">
+        </activity>
+        <activity
+                android:name=".presentation.Settings.ConfigurationFragment"
+                android:label="@string/title_activity_configuration_fragment">
+        </activity>
     </application>
 
 </manifest>

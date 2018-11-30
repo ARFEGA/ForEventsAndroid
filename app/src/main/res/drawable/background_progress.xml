@@ -10,8 +10,8 @@
 
         <size android:width="76dip" android:height="76dip" />
         <gradient android:type="sweep" android:useLevel="false"
-                  android:startColor="@color/light_orange"
-                  android:endColor="@color/light_orange"
+                  android:startColor="@color/orange_700"
+                  android:endColor="@color/common_google_signin_btn_text_dark_default"
                   android:angle="0"
         />
     </shape>

@@ -10,15 +10,14 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_tab_show.*
 import net.forevents.foreventsandroid.presentation.EventList.EventListFragment
-import kotlinx.android.synthetic.main.activity_tab_show.*
-import kotlinx.android.synthetic.main.fragment_list_events.*
+
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
 import net.forevents.foreventsandroid.R
+import net.forevents.foreventsandroid.presentation.Calendar.CalendarEventsFragment
 import net.forevents.foreventsandroid.presentation.Maps.FullMapFragment
 
 
@@ -71,7 +70,7 @@ class TabFragment : Fragment() , LifecycleOwner{
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.activity_tab_show,container,false)
+        return inflater.inflate(R.layout.fragment_tab_show,container,false)
     }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -111,7 +110,7 @@ class TabFragment : Fragment() , LifecycleOwner{
         when(position){
             0-> return EventListFragment.newInstance(position,events)
             1-> return FullMapFragment.newInstance(position,events)
-            else -> return EventListFragment.newInstance(position,events)
+            else -> return CalendarEventsFragment()
         }
 
     }

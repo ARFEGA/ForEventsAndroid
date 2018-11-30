@@ -5,6 +5,7 @@ package net.forevents.foreventsandroid.presentation.Maps
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
 import net.forevents.foreventsandroid.R
+import net.forevents.foreventsandroid.presentation.MainActivities.NucleusActivity
+import net.forevents.foreventsandroid.presentation.TabFragment.TabFragment
 
 
 class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickListener,GoogleMap.OnInfoWindowClickListener
@@ -33,7 +36,7 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
          * fragment.
          */
         private val ARG_SECTION_NUMBER = "section_number"
-        private val EXTRA_EVENTS_LIST = "EXTRA_EVENTS_LIST"
+        private val EXTRA_EVENTS = "EXTRA_EVENTS_LIST"
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -44,7 +47,7 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
             val fragment = FullMapFragment()
             val args = Bundle()
             args.putInt(ARG_SECTION_NUMBER, sectionNumber)
-            args.putParcelableArrayList(EXTRA_EVENTS_LIST,arrayListEvents)
+            args.putParcelableArrayList(EXTRA_EVENTS,arrayListEvents)
             fragment.arguments = args
             return fragment
         }
@@ -54,6 +57,11 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
+    private lateinit var events:List<AppEvents>
+    private lateinit var marker: Marker
+    //Inicio lista de tuplas vacía
+    private  var tuplaEvents = emptyList<Pair<Int,AppEvents>>().toMutableList()
+
 
 
 
@@ -71,14 +79,44 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        events =  (arguments?.getParcelableArrayList(EXTRA_EVENTS)!!)
+
+        //for(i in 0..events.size -1)  tuplaEvents.add(i,Pair(i,events[i]))
+
+        events.map { tuplaEvents.add(tuplaEvents.size  ,Pair(tuplaEvents.size ,it)) }
+       // println("EVENTS: ${tuplaEvents?.get(1)?.second}")
+        //println("EVENTS: ${tuplaEvents?.get(4)?.second}")
+
+    }
 
 
-    override fun onInfoWindowClick(p0: Marker?) {
-        Toast.makeText(activity,p0?.title,Toast.LENGTH_LONG).show()
+
+    override fun onInfoWindowClick(marker: Marker?) {
+        marker?.let {
+            Toast.makeText(activity, marker?.title, Toast.LENGTH_LONG).show()
+            (activity as NucleusActivity).openDetailScreen(tuplaEvents.get(marker.zIndex.toInt()).second)
+        }
         //Navigator.OpenEventDetail(activity!!, AppEvents(true,"https://randomuser.me/api/portraits/men/75.jpg"))
     }
 
-    override fun onMarkerClick(p0: Marker?)=false
+    override fun onMarkerClick(marker: Marker?):Boolean{
+        // We return true/false indicating that we either have consumed or not consumed the event and that if value to return is false, we wish
+        // for the default behavior to occur (which is for the camera to move such that the marker is centere
+        marker?.let{
+            marker.zIndex += .0f
+            Log.d("MARKER:","POSITION:${it.snippet} zIndex:${it.zIndex}  >>>>>>>>>  ${tuplaEvents.get(it.zIndex.toInt()).second.name}")
+            Toast.makeText(context, "${marker.title} z-index set to ${marker.zIndex}",Toast.LENGTH_SHORT).show()
+        }
+
+
+
+
+
+
+        return false
+    }
 
     /**
      * Manipulates the map once available.
@@ -96,14 +134,7 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
         //The activity will be the listener when the user will do tap  on the map
         map.setOnMarkerClickListener(this)
         map.setOnInfoWindowClickListener(this)
-
-        // Add a marker in Sydney and move the camera
-        //val sydney = LatLng(-34.0, 151.0)
-        //map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        //map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-
-
-
+        map.setContentDescription("Tu mapa de eventos")
         /*
         Zoom level 0 corresponds to the fully zoomed-out world view.
         Most areas support zoom levels up to 20, while more remote areas only support zoom levels up to 13.
@@ -131,6 +162,7 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
         //map.mapType = GoogleMap.MAP_TYPE_SATELLITE
         //map.mapType = GoogleMap.MAP_TYPE_NONE
         // 2
+        /*
         fusedLocationClient.lastLocation.addOnSuccessListener(activity!!){location ->
             //Got last known location. In some rare situations this can be nul.
             // 3
@@ -143,12 +175,21 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
             }
         }
+        */
+        tuplaEvents.map {
+            placeMarkerOnMap(it)
+
+        }
+        val coordinates = LatLng(events[0].latitude, events[0].longitude)
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 12f))
+
     }
 
     //An fun that creates a marker
 
-    private fun placeMarkerOnMap(location: LatLng) {
+    private fun placeMarkerOnMap(event:Pair<Int,AppEvents>) {
         // 1
+        val location = LatLng(event.second.latitude,event.second.longitude)
         val markerOptions = MarkerOptions().position(location)
             //.icon (BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(resources,R.mipmap.ic_user_location)))
         // 2 set an custom icon
@@ -156,15 +197,14 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
         //val icon = BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(resources,R.mipmap.ic_user_location))
         //markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(resources,R.mipmap.ic_user_location)))
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
-        markerOptions.snippet("Hola desde")
-        markerOptions.title("Velilla")
-
-
-
-
+        markerOptions.snippet("${event.second.name}")
+        markerOptions.title("${event.second.city}")
+        markerOptions.zIndex(event.first + 0f)
+        markerOptions.flat(false)
             //fromBitmap(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)))
         // 3
         map.addMarker(markerOptions)
+
     }
 
 

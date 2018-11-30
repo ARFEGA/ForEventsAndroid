@@ -45,8 +45,8 @@ class EventListFragment() : Fragment(), LifecycleOwner {
 
 
     private lateinit var mLifecycleRegistry: LifecycleRegistry
-    private lateinit var eventTaped:AppEvents
-    private lateinit var listEvents: List<AppEvents>
+    private lateinit var eventTaped:AppEvents  //Event taped
+    private lateinit var listEvents: List<AppEvents> //Events that comes from Tabfragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,8 +67,8 @@ class EventListFragment() : Fragment(), LifecycleOwner {
             }
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
-                onEventClickedListener?.OnEventClicked(eventTaped)
-                showDialog(activity!!, "Come from text box", "Come on"); true
+                onEventClickedListener?.onEventClicked(eventTaped)
+               // showDialog(activity!!, "Come from text box", "Come on"); true
             }
         })
         return view
@@ -80,18 +80,11 @@ class EventListFragment() : Fragment(), LifecycleOwner {
         mLifecycleRegistry.markState(Lifecycle.State.CREATED)
         val auxListEvents:ArrayList<AppEvents> = arguments?.getParcelableArrayList(EXTRA_EVENTS)!!
 
-        listEvents= auxListEvents.toList() as List<AppEvents>
+        listEvents= auxListEvents.toList()
 
         setUpRecycler()
 
         adapter.submitList(listEvents)
-
-        //setUpViewModel()
-
-
-
-
-
         //Ver cuando se dispara
         ghost_text.setOnEditorActionListener { v, actionId, event ->
             when (actionId) {
@@ -112,64 +105,20 @@ class EventListFragment() : Fragment(), LifecycleOwner {
     override fun getLifecycle(): Lifecycle {
         return mLifecycleRegistry
     }
-
-    lateinit var userListViewModel: EventListVM
-
-
-
-    private val adapter =
-        RecyclerAdapter { onEventClick(it) }
+    private val adapter = RecyclerAdapter { onEventClick(it) }
 
     private fun onEventClick(appEvents: AppEvents){
-        //val intent=Intent(this,EventDetailFragment::class.java)
-        //intent.putExtra(EventDetailFragment.PARAM_USER_ENTITY,userEntity.userId)
-        //startActivity(intent)
         //Las líneas anteriores, las sustituimos, por la llamada a un singleton
         eventTaped=appEvents
-        onEventClickedListener?.OnEventClicked(eventTaped)
-        //ghost_text.text = appEvents.id
+        //onEventClickedListener?.OnEventClicked(eventTaped)
+        ghost_text.text = appEvents.id
         //Navigator.OpenEventDetail(activity!!,appEvents)
-
-
-
     }
     private fun setUpRecycler(){
         recycler_view.layoutManager = LinearLayoutManager(activity!!,RecyclerView.VERTICAL,false)
         recycler_view.itemAnimator = DefaultItemAnimator()
         recycler_view.adapter = adapter
     }
-
-    private  fun setUpViewModel(){
-        userListViewModel = ViewModelProviders.of(this).get(EventListVM::class.java)
-        bindEvents()
-        //userListViewModel.loadUserList()
-    }
-
-    private fun bindEvents(){
-        userListViewModel.isLoadingState.observe(this, Observer { isLoading ->
-            isLoading?.let{
-                user_list_loading.visibility = if(it)  View.VISIBLE else View.GONE
-            }
-        })
-
-        userListViewModel.eventListState.observe(this, Observer { eventsList ->
-            eventsList?.let{
-                onEventsListLoaded(it)
-            }
-        })
-    }
-    private fun onEventsListLoaded(EventList:List<AppEvents>){
-        //val EventList_ : List<AppEvents> = listOf(
-        //    AppEvents(true,"fdsa",40.0,50.0,"fdw","fdw",
-        //        "Una foto","https://randomuser.me/api/portraits/men/69.jpg"))
-        adapter.submitList(EventList)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        //userListViewModel.loadEventList()
-    }
-
     //########## Code that's associated interface  ###############
     var onEventClickedListener:OnEventClickedListener? = null
 
@@ -197,7 +146,7 @@ class EventListFragment() : Fragment(), LifecycleOwner {
 
 
     interface OnEventClickedListener{
-        fun OnEventClicked(event:AppEvents)
+        fun onEventClicked(event:AppEvents)
     }
 
 }
