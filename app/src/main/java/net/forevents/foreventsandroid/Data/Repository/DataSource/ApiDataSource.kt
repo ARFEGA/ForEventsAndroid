@@ -5,6 +5,7 @@ package net.forevents.foreventsandroid.Data.Repository.DataSource
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
+import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppCityMapper
 
 
 import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppCreateUserMapper
@@ -25,8 +26,10 @@ class ApiDataSource(private val userService: UserService,
                     private val outUserEntityMapper: OutUserEntityMapper,
                     private val outAppUserMapper: OutAppUserMapper,
                     private val outAppCreateUserMapper: OutAppCreateUserMapper,
-                    private val outAppEventsMapper: OutAppEventsMapper
+                    private val outAppEventsMapper: OutAppEventsMapper,
+                    private val outAppCityMapper:OutAppCityMapper
 ): DataSource {
+
 
     //################  USERS  #####################
 
@@ -69,6 +72,17 @@ class ApiDataSource(private val userService: UserService,
                 .map{
                 outAppEventsMapper.transformList(it.result)
             }
+    //################   CITY   #####################
+
+    override fun getCities(city: String, limit: String): Observable<List<AppCity>> =
+        userService.getCities(city,limit)
+            .map {
+            outAppCityMapper.transformList(it.result)
+        }
+
+
+
+
 }
 
 

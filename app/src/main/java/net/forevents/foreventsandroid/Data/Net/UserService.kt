@@ -48,4 +48,8 @@ interface UserService {
 
     @GET("events")
     fun getEvent(@Query("media") media: String) : Observable<ApiEvents>
+
+    @GET("cities")
+    fun getCities(@Query("city") city: String,
+                 @Query("limit") limit: String) : Observable<ApiCity>
 }

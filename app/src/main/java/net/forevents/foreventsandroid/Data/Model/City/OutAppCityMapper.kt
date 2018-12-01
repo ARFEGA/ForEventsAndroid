@@ -1,32 +1,24 @@
 package net.forevents.foreventsandroid.Data.CreateUser.CreateUser
 
 import net.forevents.foreventsandroid.Data.CreateUser.Mapper
-import net.forevents.foreventsandroid.Data.CreateUser.User.ApiEvents
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
-import net.forevents.foreventsandroid.Data.CreateUser.User.ResultEvents
+import net.forevents.foreventsandroid.Data.CreateUser.User.*
 import net.forevents.foreventsandroid.Util.stringNullToString
 
 
-class OutAppEventsMapper: Mapper<ResultEvents, AppEvents> {
+class OutAppCityMapper: Mapper<ResultCities, AppCity> {
 
 
-    override fun transform(input: ResultEvents): AppEvents =
-        AppEvents(
-            stringNullToString(input.name),
+    override fun transform(input: ResultCities): AppCity =
+        AppCity(
             input.location.coordinates[1].toDouble(), //Latitude comes in second place
             input.location.coordinates[0].toDouble(), //Longitude comes in first place
-            stringNullToString(input.description),
             stringNullToString(input.id),
-            if (input.media.isNullOrEmpty() || input.media[0].description.isNullOrBlank())
-                            "" else input.media[0].description ,
-            if (input.media.isNullOrEmpty() || input.media[0].url.isNullOrBlank())
-                "" else input.media[0].url,
-            stringNullToString(input.begin_date),
-            stringNullToString(input.address),
             stringNullToString(input.city),
-            stringNullToString(input.country)
+            stringNullToString(input.province),
+            stringNullToString(input.country),
+            stringNullToString(input.zip_code)
             )
-    override fun transformList(inputList: List<ResultEvents>): List<AppEvents> =
+    override fun transformList(inputList: List<ResultCities>): List<AppCity> =
         inputList.map {
             transform(it) }
 

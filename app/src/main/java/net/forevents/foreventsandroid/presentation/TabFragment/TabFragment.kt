@@ -19,6 +19,7 @@ import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
 import net.forevents.foreventsandroid.R
 import net.forevents.foreventsandroid.presentation.Calendar.CalendarEventsFragment
 import net.forevents.foreventsandroid.presentation.Maps.FullMapFragment
+import net.forevents.foreventsandroid.presentation.Settings.SettingsFragment
 
 
 class TabFragment : Fragment() , LifecycleOwner{
@@ -110,7 +111,7 @@ class TabFragment : Fragment() , LifecycleOwner{
         when(position){
             0-> return EventListFragment.newInstance(position,events)
             1-> return FullMapFragment.newInstance(position,events)
-            else -> return CalendarEventsFragment()
+            else -> return SettingsFragment()
         }
 
     }

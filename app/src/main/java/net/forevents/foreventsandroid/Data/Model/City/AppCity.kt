@@ -3,29 +3,21 @@ package net.forevents.foreventsandroid.Data.CreateUser.User
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import net.forevents.foreventsandroid.R.id.begin_date
 import java.io.Serializable
 
-data class AppEvents(
-
-                        val name:String,
+data class AppCity(
                         val latitude:Double,
                         val longitude:Double,
-                        val description:String?,
                         val id:String,
-                        val imgDescription:String?,
-                        val imgUrl:String,
-                        val begin_date: String,
-                        val address: String,
                         val city: String,
-                        val country: String
+                        val province:String,
+                        val country: String,
+                        val zip_codel:String
     ):Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
         parcel.readDouble(),
         parcel.readDouble(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -35,29 +27,25 @@ data class AppEvents(
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(name)
         parcel.writeDouble(latitude)
         parcel.writeDouble(longitude)
-        parcel.writeString(description)
         parcel.writeString(id)
-        parcel.writeString(imgDescription)
-        parcel.writeString(imgUrl)
-        parcel.writeString(begin_date)
-        parcel.writeString(address)
         parcel.writeString(city)
+        parcel.writeString(province)
         parcel.writeString(country)
+        parcel.writeString(zip_codel)
     }
 
     override fun describeContents(): Int {
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<AppEvents> {
-        override fun createFromParcel(parcel: Parcel): AppEvents {
-            return AppEvents(parcel)
+    companion object CREATOR : Parcelable.Creator<AppCity> {
+        override fun createFromParcel(parcel: Parcel): AppCity {
+            return AppCity(parcel)
         }
 
-        override fun newArray(size: Int): Array<AppEvents?> {
+        override fun newArray(size: Int): Array<AppCity?> {
             return arrayOfNulls(size)
         }
     }
