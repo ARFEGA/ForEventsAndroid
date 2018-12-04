@@ -33,6 +33,8 @@ interface DataSource {
 
     fun getEvents(media: String):Observable<List<AppEvents>>
 
+    fun getEventType():Observable<List<AppEventType>>
+
     fun getCities(city:String,limit:String):Observable<List<AppCity>>
 
 }

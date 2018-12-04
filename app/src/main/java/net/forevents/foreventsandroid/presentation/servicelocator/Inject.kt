@@ -9,6 +9,7 @@ import net.forevents.foreventsandroid.Data.Repository.Repository
 import net.forevents.foreventsandroid.Util.SettingsManager
 import net.forevents.foreventsandroid.BuildConfig
 import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppCityMapper
+import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppEventTypeMapper
 import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppEventsMapper
 import net.forevents.foreventsandroid.Data.Repository.DataSource.ApiDataSource
 import okhttp3.OkHttpClient
@@ -45,6 +46,7 @@ object Inject {
     val outAppCreateUserMapper = OutAppCreateUserMapper()
     val outAppEventsMapper = OutAppEventsMapper()
     val outAppCityMapper = OutAppCityMapper()
+    val outAppEventTypeMapper = OutAppEventTypeMapper()
 
     private val apiDataSource = ApiDataSource(
         userService,
@@ -52,7 +54,8 @@ object Inject {
         outAppUserMapper,
         outAppCreateUserMapper,
         outAppEventsMapper,
-        outAppCityMapper
+        outAppCityMapper,
+        outAppEventTypeMapper
     )
     val repository = Repository(apiDataSource)
 

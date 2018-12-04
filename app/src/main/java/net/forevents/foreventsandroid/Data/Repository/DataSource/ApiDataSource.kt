@@ -9,6 +9,7 @@ import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppCityMappe
 
 
 import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppCreateUserMapper
+import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppEventTypeMapper
 import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppEventsMapper
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.OutUserEntityMapper
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserEntity
@@ -27,8 +28,10 @@ class ApiDataSource(private val userService: UserService,
                     private val outAppUserMapper: OutAppUserMapper,
                     private val outAppCreateUserMapper: OutAppCreateUserMapper,
                     private val outAppEventsMapper: OutAppEventsMapper,
-                    private val outAppCityMapper:OutAppCityMapper
+                    private val outAppCityMapper:OutAppCityMapper,
+                    private val outAppEventTypeMapper:OutAppEventTypeMapper
 ): DataSource {
+
 
 
     //################  USERS  #####################
@@ -72,6 +75,15 @@ class ApiDataSource(private val userService: UserService,
                 .map{
                 outAppEventsMapper.transformList(it.result)
             }
+
+    //################  EVENT TYPE  #####################
+
+    override fun getEventType(): Observable<List<AppEventType>> =
+        userService.getEventType()
+            .map {
+                outAppEventTypeMapper.transformList(it.result)
+            }
+
     //################   CITY   #####################
 
     override fun getCities(city: String, limit: String): Observable<List<AppCity>> =

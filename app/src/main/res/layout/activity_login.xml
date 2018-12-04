@@ -80,17 +80,8 @@
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="30dp"
-
                 android:text="Entrar"
-                android:textSize="20dp"
-                android:textColor="#000"
-                android:elevation="5dp"
-                android:background="@drawable/login_button"
-                android:textAllCaps="false"
+               style="@style/myButton"
         />
 
 

@@ -25,6 +25,7 @@ import net.forevents.foreventsandroid.presentation.EventList.EventListFragment
 import net.forevents.foreventsandroid.presentation.Maps.FullMapFragment
 import net.forevents.foreventsandroid.presentation.MyEventsFragment
 import net.forevents.foreventsandroid.presentation.SearchFragment
+import net.forevents.foreventsandroid.presentation.Settings.SettingsFragment
 import net.forevents.foreventsandroid.presentation.TabFragment.TabFragment
 import net.forevents.foreventsandroid.presentation.TabFragment.TabVM
 
@@ -160,7 +161,7 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
                 supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.content_fragment,
-                        MyEventsFragment()
+                        SettingsFragment()
                     ).commit()
         }
             R.id.nav_profile_update-> {

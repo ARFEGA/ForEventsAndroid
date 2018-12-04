@@ -111,7 +111,7 @@ class TabFragment : Fragment() , LifecycleOwner{
         when(position){
             0-> return EventListFragment.newInstance(position,events)
             1-> return FullMapFragment.newInstance(position,events)
-            else -> return SettingsFragment()
+            else -> return CalendarEventsFragment()
         }
 
     }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/black"
+>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    >
+
+        <LinearLayout
+                android:id="@+id/day_container"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+        >
+
+            <TextView
+                    android:textStyle="italic"
+                    android:id="@+id/view_agenda_day_of_month"
+                    android:text="3 de enero"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="15dp"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="2dp"
+            />
+
+            <View
+                    android:background="@color/orange_700"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+            />
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</LinearLayout>

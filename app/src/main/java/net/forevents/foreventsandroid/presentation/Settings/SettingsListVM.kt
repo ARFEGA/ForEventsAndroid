@@ -9,16 +9,18 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserEntity
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppCity
+import net.forevents.foreventsandroid.Data.CreateUser.User.AppEventType
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
 import net.forevents.foreventsandroid.presentation.servicelocator.Inject
 import java.util.concurrent.TimeUnit
 
 
-class CityListVM: BaseViewModel() {
+class SettingsListVM: BaseViewModel() {
 
     //Uso de LiveData con la activity:
     val citiesListState : MutableLiveData<List<AppCity>> = MutableLiveData()
     val isLoadingState : MutableLiveData<Boolean> = MutableLiveData()
+    val eventTypeListState : MutableLiveData<List<AppEventType>> = MutableLiveData()
 
         fun loadCitiestList(city:String,limit:String){
             Inject.repository.getCitiesList(city,limit)
@@ -35,9 +37,27 @@ class CityListVM: BaseViewModel() {
                         println("########ERROR IN LOAD EVENTS  ########### ${it.message}")
                     },
                     onComplete = {
-                        Inject.settingsManager.firstLoad = false
+                        //Inject.settingsManager.firstLoad = false
                     }
 
                 ).addTo(compositeDisposable)
         }
+
+    fun loadEventTypeList(){
+        Inject.repository.getEventType()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    eventTypeListState.value = it
+                },
+                onError = {
+                    println("########ERROR IN LOAD EVENTS type ########### ${it.message}")
+                },
+                onComplete = {
+                    //Inject.settingsManager.firstLoad = false
+                }
+
+            ).addTo(compositeDisposable)
+    }
 }

@@ -49,14 +49,6 @@
                 android:theme="@style/EventsTheme">
         </activity>
         <activity
-                android:name=".presentation.EventList.EventListActivity"
-                android:theme="@style/TransparentCompat">
-        </activity>
-        <activity
-                android:name=".presentation.EventDetail.EventDetailFragment"
-                android:theme="@style/EventsTheme">
-        </activity>
-        <activity
                 android:name=".presentation.SingUpLoginRecovery.RecoveryPasswordActivity"
                 android:theme="@style/EventsTheme">
         </activity>

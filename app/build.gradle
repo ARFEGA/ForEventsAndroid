@@ -9,11 +9,10 @@ apply plugin: 'kotlin-kapt'
 
 
 android {
-
     compileSdkVersion 28
     defaultConfig {
         applicationId "net.forevents.foreventsandroid"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -36,6 +35,9 @@ android {
 
         }
     }
+    productFlavors {
+    }
+    sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/color'] } }
 }
 
 dependencies {
@@ -113,7 +115,12 @@ dependencies {
 
     //implementation 'com.google.firebase:firebase-messaging:17.0.0:15.0.0'
 
-    //Customized calendar
+    //ToggleButton
+    implementation 'com.github.savvyapps:ToggleButtonLayout:1.2.0'
 
+    //MutiSelect Spinner
+
+    //Customized calendar
+    implementation 'com.ognev.kotlin.agendacalendarview:kotlin-agendacalendarview:1.0'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -21,7 +21,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String?) {
         //super.onNewToken(token)
-        Log.d("TOKEN", token)
+        Log.d("TOKEN FIREBASE: ", token)
 
     }
     override  fun onMessageReceived(remoteMessage: RemoteMessage) {

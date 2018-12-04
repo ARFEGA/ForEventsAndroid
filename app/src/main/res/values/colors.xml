@@ -2,14 +2,13 @@
 <resources>
     <color name="colorPrimary">#2D180A</color>
     <color name="colorPrimaryDark">#2D180A</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#d81b60</color>
     <color name="white">#ffffff</color>
     <color name="black">#000</color>
     <color name="button_color">#2D180A</color>
     <color name="orange_700">#F57C00</color>
     <color name="white_grey">#cccccc</color>
-
-
+    <color name="main_blue">#3fa2f9</color>
 </resources>
 
 <!--

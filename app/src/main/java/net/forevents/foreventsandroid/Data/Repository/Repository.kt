@@ -6,10 +6,7 @@ import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserEntity
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppCity
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppCreateUser
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppUser
+import net.forevents.foreventsandroid.Data.CreateUser.User.*
 import net.forevents.foreventsandroid.Data.Model.Response.OnlyResponse
 import net.forevents.foreventsandroid.Data.Repository.DataSource.ApiDataSource
 
@@ -39,9 +36,14 @@ class Repository(private val apiDataSource: ApiDataSource) {
 
     fun getEventsList():Observable<List<AppEvents>> = apiDataSource.getEvents("name description url")
 
-    //########### EVENTS ###################
+    //########### EVENTS TYPE ###################
 
+    fun getEventType():Observable<List<AppEventType>> = apiDataSource.getEventType()
+
+    //########### CITY ###################
     fun getCitiesList(city:String,limit:String):Observable<List<AppCity>> = apiDataSource.getCities(city,limit)
+
+
 
 
      /*fun getUserList(): Flowable<List<UserEntity>> =
