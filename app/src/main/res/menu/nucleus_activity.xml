@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/action_settings"
-          android:title="Buscar"
-          android:icon="@drawable/ic_search_48"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+>
+    <item android:id="@+id/action_logout"
+          android:title="LogOut"
+          android:icon="@drawable/ic_exit_to_app_white_24dp"
           android:orderInCategory="100"
-          app:showAsAction="never"/>
+          app:showAsAction="never|ifRoom|collapseActionView"/>
 </menu>

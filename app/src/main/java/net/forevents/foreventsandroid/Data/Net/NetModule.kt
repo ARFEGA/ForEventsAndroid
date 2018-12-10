@@ -2,7 +2,7 @@ package com.forevents.AndroidForEvents.Data.Net
 
 
 import android.content.Context
-import net.forevents.foreventsandroid.Util.getFromPreferenceManagerTypestring
+import net.forevents.foreventsandroid.Util.getFromPreferenceManagerTypeString
 import net.forevents.foreventsandroid.BuildConfig
 
 import okhttp3.OkHttpClient
@@ -19,7 +19,7 @@ class NetModule (val context:Context) {
             })
             .addInterceptor { chain ->
                 val newRequest = chain.request().newBuilder()
-                    .addHeader("token", getFromPreferenceManagerTypestring(context,"TOKEN"))
+                    .addHeader("token", getFromPreferenceManagerTypeString(context,"TOKEN"))
                     .build()
                 chain.proceed(newRequest)
             }

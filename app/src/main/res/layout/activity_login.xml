@@ -75,16 +75,41 @@
                 android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
         />
-
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:orientation="horizontal"
+                android:layout_gravity="left" android:gravity="end">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¿Aún no tienes cuenta?"
+                    android:background="@android:color/transparent"
+                    android:textColor="#ccc"
+            />
+            <Button
+                    android:id="@+id/btn_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CREAR CUENTA"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="14dp"
+                    android:background="@android:color/transparent"
+                    android:textColor="#fff"
+            />
+        </LinearLayout>
         <Button
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Entrar"
-               style="@style/myButton"
+                style="@style/myButton"
         />
-
-
 
 
     </LinearLayout>

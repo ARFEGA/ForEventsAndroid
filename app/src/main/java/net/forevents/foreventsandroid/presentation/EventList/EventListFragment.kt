@@ -6,6 +6,8 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
+import android.text.Layout
+import android.text.Layout.JUSTIFICATION_MODE_INTER_WORD
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -19,24 +21,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_list_events.*
 import kotlinx.android.synthetic.main.fragment_list_events.view.*
+import kotlinx.android.synthetic.main.row_item.*
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserEntity
 import net.forevents.foreventsandroid.Data.CreateUser.User.ApiEvents
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
 import net.forevents.foreventsandroid.presentation.Navigator.Navigator
 import net.forevents.foreventsandroid.R
-import net.forevents.foreventsandroid.Util.showDialog
+
 
 class EventListFragment() : Fragment(), LifecycleOwner {
 
     companion object {
 
-        private val EXTRA_SECTION_NUMBER = "section_number"
+        //private val EXTRA_SECTION_NUMBER = "section_number"
         private val EXTRA_EVENTS="EXTRA_EVENTS"
 
-        fun newInstance(sectionNumber: Int,events: List<AppEvents>): EventListFragment {
+        fun newInstance(events: List<AppEvents>): EventListFragment {
             val fragment = EventListFragment()
             val args = Bundle()
-            args.putInt(EXTRA_SECTION_NUMBER, sectionNumber)
+            //args.putInt(EXTRA_SECTION_NUMBER, sectionNumber)
             args.putParcelableArrayList(EXTRA_EVENTS, ArrayList(events))
             fragment.arguments = args
             return fragment
@@ -59,6 +62,7 @@ class EventListFragment() : Fragment(), LifecycleOwner {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_list_events, container, false)
 
+
         view.ghost_text.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(s: Editable) {}
 
@@ -76,25 +80,17 @@ class EventListFragment() : Fragment(), LifecycleOwner {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
+
         mLifecycleRegistry = LifecycleRegistry(this)
         mLifecycleRegistry.markState(Lifecycle.State.CREATED)
         val auxListEvents:ArrayList<AppEvents> = arguments?.getParcelableArrayList(EXTRA_EVENTS)!!
 
         listEvents= auxListEvents.toList()
-
         setUpRecycler()
-
         adapter.submitList(listEvents)
-        //Ver cuando se dispara
-        ghost_text.setOnEditorActionListener { v, actionId, event ->
-            when (actionId) {
-                EditorInfo.IME_ACTION_DONE -> {
-
-                    showDialog(activity!!, "Come from text box", "Come on"); true
-                }
-                else -> false
-            }
-        }
     }
 
     override fun onStart() {
@@ -149,6 +145,11 @@ class EventListFragment() : Fragment(), LifecycleOwner {
         fun onEventClicked(event:AppEvents)
     }
 
+
+    override fun onResume() {
+        super.onResume()
+
+    }
 }
 
 

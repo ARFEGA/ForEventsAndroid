@@ -9,6 +9,10 @@ import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.CreateUserApiRe
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserApiResponse
 import net.forevents.foreventsandroid.Data.CreateUser.User.*
 import net.forevents.foreventsandroid.Data.Model.Response.OnlyResponse
+import net.forevents.foreventsandroid.Data.Model.Transactions.ApiTransaction
+import net.forevents.foreventsandroid.Data.Model.UserById.ApiUserById
+
+import retrofit2.Response
 
 import retrofit2.http.*
 
@@ -17,8 +21,61 @@ interface UserService {
     @GET("api/?results=20")
     fun getUsers(): Flowable<UserApiResponse>
 
+    //#####################  TRANSACTIONS   ########################################
+
+    @FormUrlEncoded
+    @POST("transactions")
+    fun registerTransaction(@Field("event") event: String,
+                            @Query("token") token: String):Single<ApiTransaction>
+
+    @FormUrlEncoded
+    @POST("transactions/{transactionId}")
+    fun deleteTransaction(@Field("token") token: String,
+                          @Path("transactionId") transactionId:String):Observable<Response<Body>>
+
+
 
     //@Headers("Content-Type: application/x-www-form-urlencoded")
+
+//#####################  EVENTS   ########################################
+
+    @GET("events")
+    fun getEvent(@Query("media") media: String,@Query("userId") userId:String) : Observable<ApiEvents>
+
+    @GET("EventTypes")
+    fun getEventType() : Observable<ApiEventType>
+
+    @GET("cities")
+    fun getCities(@Query("city") city: String,
+                 @Query("limit") limit: String) : Observable<ApiCity>
+
+
+    //#####################  USER   ########################################
+    @GET("users/{userId}")
+    fun userById(@Path("userId") userId:String,@Query("token") token:String): Single<ApiUserById>
+
+
+    @FormUrlEncoded
+    @PUT("users/{userId}")
+    fun updateUser(@Path("userId") userId:String,
+                   @Query("token") token:String,
+                   @Field("email") email: String,
+                   @Field("first_name") first_name:String,
+                   @Field("last_name") last_name:String,
+                   @Field("address") address: String,
+                   @Field("city") city: String,
+                   @Field("zip_code") zip_code:String,
+                   @Field("province") province:String,
+                   @Field("country") country:String,
+                   @Field("alias") alias:String
+    )    : Observable<OnlyResponse.ResultUpdateProfile>
+
+
+
+
+
+
+
 
     @FormUrlEncoded
     @POST("users/login")
@@ -46,13 +103,11 @@ interface UserService {
     )    : Single<ApiCreateUser>
 
 
-    @GET("events")
-    fun getEvent(@Query("media") media: String) : Observable<ApiEvents>
 
-    @GET("EventTypes")
-    fun getEventType() : Observable<ApiEventType>
+    @DELETE("users/{userId}")
+    fun deleteUser(@Path("userId") userId:String,@Query("token") token:String): Observable<Response<Body>>
 
-    @GET("cities")
-    fun getCities(@Query("city") city: String,
-                 @Query("limit") limit: String) : Observable<ApiCity>
+
+   // @GET("/user/{username}?type={admin}")
+   // void getUserOuth(@Path("username") String username, @Query("admin") String type)
 }

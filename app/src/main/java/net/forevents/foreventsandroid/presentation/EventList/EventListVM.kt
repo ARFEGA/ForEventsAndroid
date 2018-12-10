@@ -18,8 +18,8 @@ class EventListVM: BaseViewModel() {
     val eventListState : MutableLiveData<List<AppEvents>> = MutableLiveData()
     val isLoadingState : MutableLiveData<Boolean> = MutableLiveData()
 
-        fun loadEventList(){
-            Inject.repository.getEventsList()
+        fun loadEventList(userId:String){
+            Inject.repository.getEventsList(userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe{isLoadingState.postValue(true)}

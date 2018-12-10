@@ -17,6 +17,8 @@ class OutAppEventsMapper: Mapper<ResultEvents, AppEvents> {
             input.location.coordinates[0].toDouble(), //Longitude comes in first place
             stringNullToString(input.description),
             stringNullToString(input.id),
+            if (input.transactions.size != 0)input.transactions[0].idTrans else null,
+            if (input.transactions.size != 0)input.transactions[0].user else null,
             if (input.media.isNullOrEmpty() || input.media[0].description.isNullOrBlank())
                             "" else input.media[0].description ,
             if (input.media.isNullOrEmpty() || input.media[0].url.isNullOrBlank())
@@ -24,6 +26,7 @@ class OutAppEventsMapper: Mapper<ResultEvents, AppEvents> {
             stringNullToString(input.begin_date),
             stringNullToString(input.address),
             stringNullToString(input.city),
+            stringNullToString(input.province),
             stringNullToString(input.country)
             )
     override fun transformList(inputList: List<ResultEvents>): List<AppEvents> =

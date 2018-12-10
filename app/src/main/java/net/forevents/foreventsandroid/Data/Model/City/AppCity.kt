@@ -2,9 +2,6 @@ package net.forevents.foreventsandroid.Data.CreateUser.User
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
-import net.forevents.foreventsandroid.R.id.begin_date
-import java.io.Serializable
 
 data class AppCity(
                         val latitude:Double,
@@ -13,7 +10,7 @@ data class AppCity(
                         val city: String,
                         val province:String,
                         val country: String,
-                        val zip_codel:String
+                        val zip_code:String
     ):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readDouble(),
@@ -33,7 +30,7 @@ data class AppCity(
         parcel.writeString(city)
         parcel.writeString(province)
         parcel.writeString(country)
-        parcel.writeString(zip_codel)
+        parcel.writeString(zip_code)
     }
 
     override fun describeContents(): Int {

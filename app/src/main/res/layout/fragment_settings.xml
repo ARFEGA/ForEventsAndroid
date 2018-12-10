@@ -27,10 +27,13 @@
         <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:padding="4dp"
+                android:gravity="end"
+                android:textStyle="italic"
                 android:textColor="@color/white"
                 android:textSize="15dp"
                 android:background="@color/black"
-                android:text="Tu ciudad favorita."/>
+                android:text="¿Tu ciudad favorita?"/>
         <View
                 android:id="@+id/divider1"
                 android:layout_width="match_parent"
@@ -60,6 +63,9 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textColor="@color/white"
+                android:padding="4dp"
+                android:gravity="end"
+                android:textStyle="italic"
                 android:textSize="15dp"
                 android:background="@color/black"
                 android:text="Selecciona radio de filtrado de eventos."/>
@@ -71,37 +77,40 @@
                 android:background="?android:attr/listDivider"/>
 
 
-
         <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
-                android:id="@+id/toggle_radio"
+                android:id="@+id/toggle_radius_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:textAlignment="center"
-                android:textColor="@color/white"
-                app:selectedColor="@color/orange_700"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                app:selectedColor="@color/colorAccent"
                 app:dividerColor="@color/colorPrimaryDark"
                 android:layout_marginBottom="20dp"
                 app:menu="@menu/toggle_menu"
                 app:toggleMode="wrap"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="@dimen/activity_horizontal_margin"
-                app:cardElevation="@dimen/activity_horizontal_margin"
+                app:cardElevation="24dp"
                 android:focusable="auto"
-                android:theme="@style/AppTheme"/>
+                android:theme="@style/EventsTheme" app:cardPreventCornerOverlap="false"/>
         <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textColor="@color/white"
                 android:background="@color/black"
+                android:padding="4dp"
+                android:gravity="end"
+                android:textStyle="italic"
                 android:textSize="15dp"
-                android:text="Selecciona los tipos de eventos que te gustan."/>
+                android:text="¿Qué tipo de eventos te gustan?"/>
         <View
                 android:id="@+id/divider3"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:layout_marginBottom="5dp"
                 android:background="?android:attr/listDivider"/>
+
 
         <RadioGroup
                 android:id="@+id/radio_group_button_event_type"
@@ -110,8 +119,10 @@
                 android:alpha="0.8"
                 android:padding="20dp"
                 style="@style/AppTheme.PopupOverlay.EventType"
-                android:layout_marginBottom="5dp" android:fadingEdge="vertical"
-                android:divider="@drawable/background_color_circle_selector" android:orientation="vertical"/>
+                android:layout_marginBottom="5dp"
+                android:fadingEdge="vertical"
+                android:divider="@drawable/background_color_circle_selector"
+                android:orientation="vertical"/>
 
         <Spinner
                 android:layout_width="match_parent"
@@ -123,7 +134,7 @@
 
         />
         <Button
-                android:id="@+id/button_settings_save"
+                android:id="@+id/settings_save_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"

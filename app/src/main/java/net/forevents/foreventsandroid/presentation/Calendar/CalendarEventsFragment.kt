@@ -24,7 +24,9 @@ import com.ognev.kotlin.agendacalendarview.models.DayItem
 import com.ognev.kotlin.agendacalendarview.models.IDayItem
 
 import kotlinx.android.synthetic.main.fragment_calendar.*
+import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
 import net.forevents.foreventsandroid.Util.showDialog
+import net.forevents.foreventsandroid.presentation.EventList.EventListFragment
 
 import java.text.SimpleDateFormat
 
@@ -32,8 +34,25 @@ import kotlin.collections.ArrayList
 
 
 class CalendarEventsFragment : Fragment(), CalendarController {
+    companion object {
+
+        //private val EXTRA_SECTION_NUMBER = "section_number"
+        private val EXTRA_EVENTS="EXTRA_EVENTS"
+
+        fun newInstance(events: List<AppEvents>): CalendarEventsFragment {
+            val fragment = CalendarEventsFragment()
+            val args = Bundle()
+            //args.putInt(EXTRA_SECTION_NUMBER, sectionNumber)
+            args.putParcelableArrayList(EXTRA_EVENTS, ArrayList(events))
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+
 
     private var oldDate: Calendar? = null
+    private lateinit var listEvents: List<AppEvents> //Events that comes from Tabfragment
     private var eventList: MutableList<CalendarEvent> = ArrayList()
     private lateinit var minDate: Calendar
     private lateinit var maxDate: Calendar
@@ -59,6 +78,12 @@ class CalendarEventsFragment : Fragment(), CalendarController {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val auxListEvents:ArrayList<AppEvents> = arguments?.getParcelableArrayList(EXTRA_EVENTS)!!
+
+        listEvents= auxListEvents.toList()
+
+
+
         oldDate = Calendar.getInstance()
         minDate = Calendar.getInstance()
         maxDate = Calendar.getInstance()

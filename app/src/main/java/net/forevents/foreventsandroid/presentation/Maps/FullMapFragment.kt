@@ -35,18 +35,18 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
          * The fragment argument representing the section number for this
          * fragment.
          */
-        private val ARG_SECTION_NUMBER = "section_number"
+        //private val ARG_SECTION_NUMBER = "section_number"
         private val EXTRA_EVENTS = "EXTRA_EVENTS_LIST"
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        fun newInstance(sectionNumber: Int,events:List<AppEvents>): FullMapFragment {
+        fun newInstance(events:List<AppEvents>): FullMapFragment {
             val arrayListEvents = arrayListOf<AppEvents>()
             events.map {  arrayListEvents.add(it)}
             val fragment = FullMapFragment()
             val args = Bundle()
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber)
+            //args.putInt(ARG_SECTION_NUMBER, sectionNumber)
             args.putParcelableArrayList(EXTRA_EVENTS,arrayListEvents)
             fragment.arguments = args
             return fragment

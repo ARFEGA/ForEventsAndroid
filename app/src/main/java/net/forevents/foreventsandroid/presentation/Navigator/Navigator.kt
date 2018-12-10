@@ -2,6 +2,7 @@ package net.forevents.foreventsandroid.presentation.Navigator
 
 import android.app.Activity
 import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
 import net.forevents.foreventsandroid.presentation.MainActivities.NucleusActivity
 import net.forevents.foreventsandroid.presentation.SingUpLoginRecovery.LoginActivity
 

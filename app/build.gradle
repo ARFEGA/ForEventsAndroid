@@ -12,7 +12,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "net.forevents.foreventsandroid"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -122,5 +122,17 @@ dependencies {
 
     //Customized calendar
     implementation 'com.ognev.kotlin.agendacalendarview:kotlin-agendacalendarview:1.0'
+
+    ///To see data saved in preference manager
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+
+    // Anko Commons
+    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+
+    // Anko Layouts
+    implementation "org.jetbrains.anko:anko-sdk25:$anko_version"
+
+    // sdk15, sdk19, sdk21, sdk23 are also available
+    implementation "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
 }
 apply plugin: 'com.google.gms.google-services'

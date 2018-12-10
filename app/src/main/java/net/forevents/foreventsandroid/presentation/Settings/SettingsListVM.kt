@@ -26,7 +26,8 @@ class SettingsListVM: BaseViewModel() {
             Inject.repository.getCitiesList(city,limit)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .debounce(4000,TimeUnit.MILLISECONDS)
+                .debounce(300,TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
                 .doOnSubscribe{isLoadingState.postValue(true)}
                 .doOnTerminate{isLoadingState.postValue(false)}
                 .subscribeBy(

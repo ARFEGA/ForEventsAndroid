@@ -12,17 +12,23 @@ data class AppEvents(
                         val longitude:Double,
                         val description:String?,
                         val id:String,
+                        val idTrans:String?,
+                        val user:String?,
                         val imgDescription:String?,
                         val imgUrl:String,
                         val begin_date: String,
                         val address: String,
                         val city: String,
+                        val province: String,
                         val country: String
     ):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readDouble(),
         parcel.readDouble(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -40,11 +46,14 @@ data class AppEvents(
         parcel.writeDouble(longitude)
         parcel.writeString(description)
         parcel.writeString(id)
+        parcel.writeString(idTrans)
+        parcel.writeString(user)
         parcel.writeString(imgDescription)
         parcel.writeString(imgUrl)
         parcel.writeString(begin_date)
         parcel.writeString(address)
         parcel.writeString(city)
+        parcel.writeString(province)
         parcel.writeString(country)
     }
 

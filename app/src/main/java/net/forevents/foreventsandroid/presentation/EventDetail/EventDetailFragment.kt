@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Criteria
 import android.location.LocationManager
 import android.os.Bundle
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.row_item.view.*
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
 import net.forevents.foreventsandroid.R
 import net.forevents.foreventsandroid.Util.showDialog
@@ -70,10 +72,33 @@ class EventDetailFragment : Fragment() ,OnMapReadyCallback,  GoogleMap.OnMarkerC
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        description_event.setJustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD)
+
+
+
         go_full_screen_map.setOnClickListener {
             (activity as NucleusActivity).openFullScreenMap(listOf<AppEvents>(event))
         }
         event = arguments?.getParcelable(EXTRA_EVENT) as AppEvents
+         if (event.idTrans.isNullOrBlank() || event.idTrans.isNullOrEmpty()){
+             btn_book.text = "Asistiré"
+             btn_book.setOnClickListener {
+                 (activity as NucleusActivity).saveTransaction(event.id)
+             }
+         }else{
+             btn_book.text = "Anular Reserva"
+             btn_book.setOnClickListener {
+                 (activity as NucleusActivity).delTransaction(event.idTrans.toString())
+             }
+         }
+
+
+
+
+
+
+
         drawEvent(event)
         initMap()
     }

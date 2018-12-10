@@ -6,6 +6,8 @@ object OnlyResponse {
 
 
         data class ResultRecoveryPassword(val ok: Boolean,val message:String):Serializable
+        data class ResultDeleteProfile(val ok: Boolean,val message:String):Serializable
+        data class ResultUpdateProfile(val ok: Boolean,val message: String,val error:List<String>):Serializable
         data class Data(val children: List<Children>)
         data class Children(val data: Datas)
         data class Datas(val author: String,val thumbnail: String,val title: String)

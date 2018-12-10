@@ -99,5 +99,11 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_nucleus_activity">nucleus_activity</string>
     <string name="recovery_password">Recuperar contraseña</string>
-    <string name="title_activity_configuration_fragment">Configuration</string>
+
+
+    <string name="title_alert_delete_profile">Borrado de perfil</string>
+    <string name="msg_alert_delete_profile">Le informamos que en caso de pulsar BORRAR USUARIO, serán eliminados todos
+        sus datos personales de nuestra base de datos, no pudiendo acceder a su historial en caso de decidir registrarse
+        nuevamente.
+    </string>
 </resources>

@@ -1,47 +1,44 @@
 package net.forevents.foreventsandroid.presentation.MainActivities
 
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
-import android.util.AttributeSet
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.*
 import kotlinx.android.synthetic.main.activity_nucleus_activity.*
 import kotlinx.android.synthetic.main.app_bar_nucleus_activity.*
-import kotlinx.android.synthetic.main.fragment_list_events.*
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
 import net.forevents.foreventsandroid.R
-import net.forevents.foreventsandroid.R.id.*
-import net.forevents.foreventsandroid.UpdateProfileFragment
+import net.forevents.foreventsandroid.SplashFragment
+import net.forevents.foreventsandroid.Util.Constants.PMANAGER_ID_USER
+import net.forevents.foreventsandroid.Util.Constants.PMANAGER_TOKEN_USER
+import net.forevents.foreventsandroid.Util.getFromPreferenceManagerTypeString
+import net.forevents.foreventsandroid.Util.logOut
+import net.forevents.foreventsandroid.Util.removeAtPreferenceManagerTypeString
 import net.forevents.foreventsandroid.presentation.EventDetail.EventDetailFragment
 import net.forevents.foreventsandroid.presentation.EventList.EventListFragment
 import net.forevents.foreventsandroid.presentation.Maps.FullMapFragment
 import net.forevents.foreventsandroid.presentation.MyEventsFragment
-import net.forevents.foreventsandroid.presentation.SearchFragment
 import net.forevents.foreventsandroid.presentation.Settings.SettingsFragment
+import net.forevents.foreventsandroid.presentation.SingUpLoginRecovery.LoginActivity
+import net.forevents.foreventsandroid.presentation.SingUpLoginRecovery.SingUpActivity
+import net.forevents.foreventsandroid.presentation.SingUpLoginRecovery.UpdateUserFragment
 import net.forevents.foreventsandroid.presentation.TabFragment.TabFragment
-import net.forevents.foreventsandroid.presentation.TabFragment.TabVM
 
 class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNavigationItemSelectedListener ,EventListFragment.OnEventClickedListener{
 
     private lateinit var mLifecycleRegistry: LifecycleRegistry
     private lateinit var viewModel : NucleusActivityVM
     private lateinit var events:List<AppEvents>
+    private lateinit var userId:String
 
-    //Call to EventDetailFragment
-    override fun onEventClicked(event: AppEvents) {
-        supportFragmentManager.beginTransaction()
-            .replace(
-                R.id.content_fragment,
-                EventDetailFragment.newInstance(event)
-            ).commit()    }
 
     override fun onStart() {
         super.onStart()
@@ -55,20 +52,20 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nucleus_activity)
-
+        userId=getFromPreferenceManagerTypeString(this, PMANAGER_ID_USER)!!
         mLifecycleRegistry = LifecycleRegistry(this)
         mLifecycleRegistry.markState(Lifecycle.State.CREATED)
 
         setSupportActionBar(toolbar)
         setUpViewModel()
-        viewModel.loadEventList()
+        viewModel.loadEventList(userId)
 
 
 
-        fab.setOnClickListener { view ->
+        /*fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-        }
+        }*/
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar,
@@ -84,7 +81,6 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
     private  fun setUpViewModel(){
         viewModel = ViewModelProviders.of(this).get(NucleusActivityVM::class.java)
         bindEvents()
-        //userListViewModel.loadUserList()
     }
 
     private fun bindEvents(){
@@ -104,18 +100,36 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
                     ).commit()
             }
         })
+
+        viewModel.deleteUserState.observe(this, Observer {deleteState ->
+            deleteState?.let{
+                Toast.makeText(this,"PERFIL ELIMINADO CORRECTAMENTE",Toast.LENGTH_LONG).show()
+                ñapa()
+                logOut(this)
+                finish()
+            }
+        })
+
+        viewModel.saveTransactionState.observe(this, Observer { saveState->
+            saveState?.let {
+                Toast.makeText(this,"RESERVA REALIZADA",Toast.LENGTH_LONG).show()
+            }
+        })
+
+        viewModel.deleteTransactionState.observe(this, Observer { deleteState ->
+            deleteState?.let {
+                Toast.makeText(this,"RESERVA ANULADA",Toast.LENGTH_LONG).show()
+            }
+         })
+
+
+
     }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-
-
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
+            ñapa()
             super.onBackPressed()
         }
     }
@@ -131,12 +145,12 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(
-                        R.id.content_fragment,
-                        SearchFragment()
-                    ).commit()
+            R.id.action_logout -> {
+                ñapa()
+                removeAtPreferenceManagerTypeString(this,PMANAGER_TOKEN_USER)
+                val intent = Intent(this, LoginActivity::class.java)
+                this.startActivity(intent)
+                finish()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -146,10 +160,11 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
+            //######## EVENTOS ##########
             R.id.nav_gallery -> {
-                viewModel.loadEventList()
+                viewModel.loadEventList(userId)
             }
-            R.id.nav_camera -> {
+            R.id.nav_mis_eventos -> {
                 supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.content_fragment,
@@ -163,15 +178,27 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
                         R.id.content_fragment,
                         SettingsFragment()
                     ).commit()
-        }
+            }
+            R.id.nav_favorite_searches -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(
+                        R.id.content_fragment,
+                        MyEventsFragment()
+                    ).commit()
+            }
+
             R.id.nav_profile_update-> {
                 supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.content_fragment,
-                        UpdateProfileFragment()
+                        UpdateUserFragment()
                     ).commit()
             }
+            R.id.nav_profile_delete ->{
+                showDeleteDialog(this)
+            }
             R.id.nav_share -> {
+
                 Toast.makeText(this,"nav_share", Toast.LENGTH_LONG).show()
             }
             R.id.nav_send -> {
@@ -187,8 +214,20 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.content_fragment,
-                FullMapFragment.newInstance(1,event)
+                FullMapFragment.newInstance(event)
             ).commit()
+    }
+
+    fun saveTransaction(eventId:String){
+        viewModel.saveTransaction(
+            getFromPreferenceManagerTypeString(this,PMANAGER_TOKEN_USER)!!,
+            eventId)
+    }
+
+    fun delTransaction(transactionId:String){
+        viewModel.delTransaction(
+            getFromPreferenceManagerTypeString(this,PMANAGER_TOKEN_USER)!!,
+            transactionId)
     }
 
     fun openDetailScreen(event: AppEvents){
@@ -199,5 +238,59 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
             ).commit()
     }
 
+    fun showDeleteDialog(context: Context){
+        // Late initialize an alert dialog object
+        lateinit var dialog: androidx.appcompat.app.AlertDialog
+        context.setTheme(R.style.AlertDialogDeleteUser)
+        // Initialize a new instance of alert dialog builder object
+        val builder = androidx.appcompat.app.AlertDialog.Builder(context)
+        //ContextThemeWrapper(context, R.style.AlertDialogCustom))
+        // Set a title for alert dialog
+        builder.setTitle(R.string.title_alert_delete_profile)
+        // Set a message for alert dialog
+        builder.setMessage(R.string.msg_alert_delete_profile)
+        // On click listener for dialog buttons
+        val resultDialogClickListener = DialogInterface.OnClickListener{ _, which ->
+            when(which){
+                DialogInterface.BUTTON_POSITIVE ->
+                   viewModel.deleteProfile(
+                        getFromPreferenceManagerTypeString(this,PMANAGER_ID_USER)!!,
+                        getFromPreferenceManagerTypeString(this,PMANAGER_TOKEN_USER)!!
+                    )
+                //DialogInterface.BUTTON_NEGATIVE -> Toast.makeText(context,"ENJOY IT",Toast.LENGTH_LONG)
+                DialogInterface.BUTTON_NEUTRAL -> {}
+            }
+        }
+        // Set the alert dialog positive/yes button
+        builder.setPositiveButton("BORRAR PERFIL",resultDialogClickListener)
+        // Set the alert dialog negative/no button
+        //builder.setNegativeButton("NO",dialogClickListener)
+        // Set the alert dialog neutral/cancel button
+        builder.setNeutralButton("CANCELAR",resultDialogClickListener)
+        // Initialize the AlertDialog using builder object
+        dialog = builder.create()
+        //dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.WHITE)
+        //dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(Color.WHITE)
+        dialog.setIcon(R.drawable.delete_user)
+        // Finally, display the alert dialog
+        dialog.show()
+    }
 
+    //Call to EventDetailFragment
+    override fun onEventClicked(event: AppEvents) {
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.content_fragment,
+                EventDetailFragment.newInstance(event)
+            ).commit()    }
+    private fun ñapa(){
+        //TODO investigar la causa por la que si no asigno un fragment distinto al de tab's, al volver a la pantalla de login
+        //Todo no puedo interactuar con ella
+        supportFragmentManager.beginTransaction().replace(R.id.content_fragment, SplashFragment()).commit()
+    }
+
+    fun logOut(){
+        ñapa()
+        logOut(this)
+    }
 }

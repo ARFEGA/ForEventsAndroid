@@ -5,35 +5,52 @@
 
     <group android:checkableBehavior="single">
 
-        <item
-                android:id="@+id/nav_gallery"
-                android:icon="@drawable/ic_menu_gallery"
-                android:title="Galería de eventos"/>
-        <item
-                android:id="@+id/nav_camera"
-                android:icon="@drawable/ic_menu_camera"
-                android:title="Mis eventos"/>
-        <item
-                android:id="@+id/nav_settings_searches"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="Configuración busquedas"/>
-        <item
-                android:id="@+id/nav_profile_update"
-                android:icon="@drawable/ic_menu_slideshow"
-                android:title="Actualiza tu inf."/>
-    </group>
+        <item android:title="Eventos">
+            <menu>
+                <item
+                        android:id="@+id/nav_gallery"
+                        android:icon="@drawable/ic_party_filled_50"
+                        android:title="Galería de eventos"/>
+                <item
+                        android:id="@+id/nav_mis_eventos"
+                        android:icon="@drawable/ic_sentiment_very_satisfied_black_48dp"
+                        android:title="Mis eventos reservados"/>
+                <item
+                        android:id="@+id/nav_settings_searches"
+                        android:icon="@drawable/ic_config_search_48"
+                        android:title="Configuración busquedas"/>
+                <item
+                        android:id="@+id/nav_favorite_searches"
+                        android:icon="@drawable/ic_search_favorite_50"
+                        android:title="Busquedas favoritas"/>
+            </menu>
+        </item>
 
-    <item android:title="Comparte">
-        <menu>
-            <item
-                    android:id="@+id/nav_share"
-                    android:icon="@drawable/ic_menu_share"
-                    android:title="Compartir"/>
-            <item
-                    android:id="@+id/nav_send"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="Enviar"/>
-        </menu>
-    </item>
+        <item android:title="Perfil">
+            <menu>
+                <item
+                        android:id="@+id/nav_profile_update"
+                        android:icon="@drawable/ic_person_black_48dp"
+                        android:title="Actualiza tu perfil"/>
+                <item
+                        android:id="@+id/nav_profile_delete"
+                        android:icon="@drawable/ic_delete_forever_black_48dp"
+                        android:title="Eliminar perfil"/>
+            </menu>
+        </item>
+
+        <item android:title="Comparte">
+            <menu>
+                <item
+                        android:id="@+id/nav_share"
+                        android:icon="@drawable/ic_menu_share"
+                        android:title="Compartir"/>
+                <item
+                        android:id="@+id/nav_send"
+                        android:icon="@drawable/ic_menu_send"
+                        android:title="Enviar"/>
+            </menu>
+        </item>
+    </group>
 
 </menu>

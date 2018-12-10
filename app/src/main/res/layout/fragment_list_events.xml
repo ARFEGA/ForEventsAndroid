@@ -8,13 +8,15 @@
         android:background="#C0000000"
         tools:context=".presentation.EventList.EventListFragment">
 
-    <ImageView
+
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/back_concert"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
+        />
 
-    />
+
     <TextView
             android:text="ghost_text"
             android:layout_width="wrap_content"
@@ -40,14 +42,14 @@
             android:visibility="gone"
             tools:visibility="visible"
     />
-   <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:src="@mipmap/ic_launcher_round"
-            android:layout_margin="16dp"
-    />-->
 
+<!--<com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:src="@mipmap/ic_launcher_round"
+                android:layout_margin="16dp"
+        />-->
 
 </FrameLayout>

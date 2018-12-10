@@ -1,10 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.journaldev.MapsInAction.MainActivity">
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.journaldev.MapsInAction.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="Settings"
-        app:showAsAction="never" />
+            android:id="@+id/action_logout"
+            android:orderInCategory="100"
+            android:title="LogOut"
+            android:icon="@drawable/ic_exit_to_app_white_24dp"
+            app:showAsAction="never|ifRoom|collapseActionView" android:layout_width="match_parent"/>
 </menu>

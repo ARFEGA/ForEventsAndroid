@@ -26,31 +26,35 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity
-                android:name=".presentation.MainActivities.NucleusActivity"
-                android:label="@string/title_activity_nucleus_activity"
-                android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+
         <activity
                 android:name=".presentation.MainActivities.MainActivity"
                 android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
                 android:name=".presentation.SingUpLoginRecovery.LoginActivity"
-                android:theme="@style/TransparentCompat">
+                android:launchMode="singleInstance"
+                android:theme="@style/EventsTheme">
         </activity>
+
         <activity
                 android:name=".presentation.SingUpLoginRecovery.SingUpActivity"
                 android:theme="@style/EventsTheme">
         </activity>
+
         <activity
                 android:name=".presentation.SingUpLoginRecovery.RecoveryPasswordActivity"
                 android:theme="@style/EventsTheme">
+        </activity>
+
+        <activity
+                android:name=".presentation.MainActivities.NucleusActivity"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <!--
@@ -77,10 +81,7 @@
                 android:name="org.apache.http.legacy"
                 android:required="false"/>
 
-        <activity
-                android:name=".presentation.Calendar.CalendarEventsFragment"
-                android:theme="@style/TransparentCompat">
-        </activity>
+
 
         <!--
 FCM genera un ID de instancia, el cual utiliza como token de registro. Cuando se genere un ID de instancia,
@@ -117,15 +118,6 @@ FirebaseMessaging.getInstance().setAutoInitEnabled(true);
                     android:name="com.google.firebase.messaging.default_notification_color"
                     android:resource="@color/colorAccent"/>
         </service>
-
-        <activity
-                android:name=".presentation.Settings.SettingsFragment"
-                android:label="@string/title_activity_settings">
-        </activity>
-        <activity
-                android:name=".presentation.Settings.ConfigurationFragment"
-                android:label="@string/title_activity_configuration_fragment">
-        </activity>
     </application>
 
 </manifest>

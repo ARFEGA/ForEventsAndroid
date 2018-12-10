@@ -10,16 +10,82 @@
         android:background="@drawable/back_concert"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    
-    <ImageView
-            android:id="@+id/image_user"
-            android:layout_weight="1"
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            tools:srcCompat="@tools:sample/avatars"
-            android:layout_marginBottom="5dp"
-           />
+            android:layout_weight="0.5"
+            android:layout_marginBottom="5dp">
+        <ImageView
+                android:id="@+id/image_user"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:srcCompat="@tools:sample/avatars"
+
+
+               />
+            <Button
+                    style="@style/my_Btn_Detail"
+                    android:background="@drawable/book_button"
+                    android:textSize="15dp"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:id="@+id/btn_book"
+
+            />
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/book_button"
+                    android:padding="4dp"
+                   >
+            <Button
+                    android:id="@+id/btn_in_out_door"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    style="@style/my_Btn_Detail"
+                    android:drawableLeft="@drawable/ic_indoor"
+                    android:text="Interior"
+                     />
+
+            <Button
+                    android:id="@+id/limit_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    style="@style/my_Btn_Detail"
+                    android:drawableLeft="@drawable/ic_age"
+                    android:text="+3"
+                    />
+            <Button
+                    android:id="@+id/people_booking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:drawableLeft="@drawable/ic_visitors"
+                    style="@style/my_Btn_Detail"
+                    android:text="535"
+                    />
+            <Button
+                    android:id="@+id/ticket_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:drawableLeft="@drawable/ic_price"
+                    style="@style/my_Btn_Detail"
+                    android:text="35€"
+                    />
+            </LinearLayout>
+    </RelativeLayout>
+
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -27,46 +93,63 @@
             android:background="#C0000000"
             android:orientation="vertical"
             android:gravity="center_vertical"
-            android:layout_marginBottom="5dp">
-    <TextView
-
-            android:id="@+id/name_event"
-            android:text="GFDWGFEWRTGRGRF"
-            android:layout_marginBottom="2dp"
-            style="@style/TextView.DetailEvent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    <TextView
-
-            android:id="@+id/description_event"
-            style="@style/TextView.DetailEvent"
-            android:text="GFDWGFEWRTGRGRF"
-            android:layout_marginBottom="2dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    <TextView
-
-            android:id="@+id/address_event"
-            style="@style/TextView.DetailEvent"
-            android:layout_marginBottom="10dp"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+    >
+    <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="GFDWGFEWRTGRGRF"/>
+
+    >
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+
+
         <TextView
-                android:id="@+id/begin_date"
-                android:layout_marginTop="10dp"
+
+                android:id="@+id/name_event"
+                android:text="GFDWGFEWRTGRGRF"
                 android:layout_marginBottom="2dp"
                 style="@style/TextView.DetailEvent"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        <TextView
+
+                android:id="@+id/description_event"
+                style="@style/TextView.DetailEvent"
+                android:text="GFDWGFEWRTGRGRF"
+                android:layout_marginBottom="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        <TextView
+
+                android:id="@+id/address_event"
+                style="@style/TextView.DetailEvent"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="GFDWGFEWRTGRGRF"/>
+            <TextView
+                    android:id="@+id/begin_date"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="2dp"
+                    style="@style/TextView.DetailEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="GFDWGFEWRTGRGRF"/>
+
+        </LinearLayout>
+    </ScrollView>
     </LinearLayout>
     <fragment
             android:layout_weight="1"
             android:id="@+id/mapView"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
         <ImageButton
                 android:id="@+id/go_full_screen_map"
                 android:layout_width="wrap_content"

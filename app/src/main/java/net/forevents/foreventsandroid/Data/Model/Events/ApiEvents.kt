@@ -15,13 +15,20 @@ data class ResultEvents(
     @SerializedName("location") val location:Location,
     @SerializedName("description") val description: String,
     @SerializedName("_id") val id: String,
+    @SerializedName("transactions") val transactions: List<TransactionsInEvents>,
     @SerializedName("media") val media: List<Media>,
     @SerializedName("begin_date") val begin_date: String,
     @SerializedName("adress") val address: String,
     @SerializedName("city") val city: String,
+    @SerializedName("province") val province: String,
     @SerializedName("country") val country: String
 
     )
+
+data class TransactionsInEvents(
+    @SerializedName("_id") val idTrans:String,
+    @SerializedName("user") val user:String
+)
 
 data class Media(
     @SerializedName("description") val description:String,
