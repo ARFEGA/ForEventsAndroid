@@ -24,15 +24,26 @@ import net.forevents.foreventsandroid.Util.logOut
 import net.forevents.foreventsandroid.Util.removeAtPreferenceManagerTypeString
 import net.forevents.foreventsandroid.presentation.EventDetail.EventDetailFragment
 import net.forevents.foreventsandroid.presentation.EventList.EventListFragment
+import net.forevents.foreventsandroid.presentation.MyEvents.MyEventsFragment
 import net.forevents.foreventsandroid.presentation.Maps.FullMapFragment
-import net.forevents.foreventsandroid.presentation.MyEventsFragment
+import net.forevents.foreventsandroid.Pruebas.MyOldEventsFragment
 import net.forevents.foreventsandroid.presentation.Settings.SettingsFragment
 import net.forevents.foreventsandroid.presentation.SingUpLoginRecovery.LoginActivity
-import net.forevents.foreventsandroid.presentation.SingUpLoginRecovery.SingUpActivity
 import net.forevents.foreventsandroid.presentation.SingUpLoginRecovery.UpdateUserFragment
 import net.forevents.foreventsandroid.presentation.TabFragment.TabFragment
+import net.forevents.foreventsandroid.presentation.MyEvents.dummy.DummyContent
 
-class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNavigationItemSelectedListener ,EventListFragment.OnEventClickedListener{
+class NucleusActivity : AppCompatActivity(),
+    LifecycleOwner,
+    NavigationView.OnNavigationItemSelectedListener ,
+    EventListFragment.OnEventClickedListener,
+    EventDetailFragment.OnBookButtonClickedListenerDetailFragment,
+    MyEventsFragment.OnListFragmentInteractionListener {
+
+
+    override fun onListFragmentInteraction(event: AppEvents?) {
+        Toast.makeText(this,event.toString(),Toast.LENGTH_LONG).show()
+    }
 
     private lateinit var mLifecycleRegistry: LifecycleRegistry
     private lateinit var viewModel : NucleusActivityVM
@@ -113,12 +124,14 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
         viewModel.saveTransactionState.observe(this, Observer { saveState->
             saveState?.let {
                 Toast.makeText(this,"RESERVA REALIZADA",Toast.LENGTH_LONG).show()
+                //EventDetailFragment().responseFromSaveTransation(true)
             }
         })
 
         viewModel.deleteTransactionState.observe(this, Observer { deleteState ->
             deleteState?.let {
                 Toast.makeText(this,"RESERVA ANULADA",Toast.LENGTH_LONG).show()
+
             }
          })
 
@@ -168,7 +181,7 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
                 supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.content_fragment,
-                        MyEventsFragment()
+                        MyEventsFragment.newInstance(events)
                     ).commit()
             }
 
@@ -183,7 +196,7 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
                 supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.content_fragment,
-                        MyEventsFragment()
+                        MyOldEventsFragment()
                     ).commit()
             }
 
@@ -218,17 +231,23 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
             ).commit()
     }
 
-    fun saveTransaction(eventId:String){
-        viewModel.saveTransaction(
-            getFromPreferenceManagerTypeString(this,PMANAGER_TOKEN_USER)!!,
-            eventId)
+    override fun onBookBtnClickedFragmentDetail(typeAction: String,eventOrTransactionID: String) {
+        when(typeAction){
+            "del"->{
+                viewModel.delTransaction(
+                    getFromPreferenceManagerTypeString(this,PMANAGER_TOKEN_USER)!!,
+                    eventOrTransactionID)
+            }
+            "save"->{
+                viewModel.saveTransaction(
+                    getFromPreferenceManagerTypeString(this,PMANAGER_TOKEN_USER)!!,
+                    eventOrTransactionID)
+            }
+        }
+
     }
 
-    fun delTransaction(transactionId:String){
-        viewModel.delTransaction(
-            getFromPreferenceManagerTypeString(this,PMANAGER_TOKEN_USER)!!,
-            transactionId)
-    }
+
 
     fun openDetailScreen(event: AppEvents){
         supportFragmentManager.beginTransaction()
@@ -293,4 +312,8 @@ class NucleusActivity : AppCompatActivity(),LifecycleOwner, NavigationView.OnNav
         ñapa()
         logOut(this)
     }
+
+
+
+
 }

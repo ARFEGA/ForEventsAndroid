@@ -28,10 +28,10 @@ interface UserService {
     fun registerTransaction(@Field("event") event: String,
                             @Query("token") token: String):Single<ApiTransaction>
 
-    @FormUrlEncoded
-    @POST("transactions/{transactionId}")
-    fun deleteTransaction(@Field("token") token: String,
-                          @Path("transactionId") transactionId:String):Observable<Response<Body>>
+
+    @DELETE("transactions/{transactionId}")
+    fun deleteTransaction(@Path("transactionId") transactionId:String,
+                          @Query("token") token: String):Observable<Response<Body>>
 
 
 

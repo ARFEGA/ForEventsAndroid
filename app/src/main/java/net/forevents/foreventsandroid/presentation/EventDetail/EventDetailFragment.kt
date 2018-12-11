@@ -1,6 +1,7 @@
 package net.forevents.foreventsandroid.presentation.EventDetail
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Criteria
@@ -10,13 +11,14 @@ import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_event_detail.*
-
-
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -25,11 +27,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.row_item.view.*
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
 import net.forevents.foreventsandroid.R
+import net.forevents.foreventsandroid.Util.Constants
+import net.forevents.foreventsandroid.Util.getFromPreferenceManagerTypeString
 import net.forevents.foreventsandroid.Util.showDialog
 import net.forevents.foreventsandroid.presentation.MainActivities.NucleusActivity
+import net.forevents.foreventsandroid.presentation.MainActivities.NucleusActivityVM
 
 
 class EventDetailFragment : Fragment() ,OnMapReadyCallback,  GoogleMap.OnMarkerClickListener{
@@ -39,6 +43,8 @@ class EventDetailFragment : Fragment() ,OnMapReadyCallback,  GoogleMap.OnMarkerC
         private const val MY_LOCATION_REQUEST_CODE = 329
         private const val NEW_REMINDER_REQUEST_CODE = 330
         val EXTRA_EVENT = "EXTRA_EVENT"
+        val ASISTIRE = "Asistiré"
+        val ANULAR_RESERVA = "Anular Reserva"
 
         fun newInstance(event: AppEvents): EventDetailFragment {
                 val arguments = Bundle()
@@ -47,7 +53,10 @@ class EventDetailFragment : Fragment() ,OnMapReadyCallback,  GoogleMap.OnMarkerC
                 fragment.arguments = arguments
                 return fragment
             }
+
+
         }
+    private lateinit var viewModel : NucleusActivityVM
 
     private  var map: GoogleMap? = null
 
@@ -67,7 +76,9 @@ class EventDetailFragment : Fragment() ,OnMapReadyCallback,  GoogleMap.OnMarkerC
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        setUpViewModel()
         return inflater.inflate(R.layout.fragment_event_detail,container,false)
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -75,33 +86,53 @@ class EventDetailFragment : Fragment() ,OnMapReadyCallback,  GoogleMap.OnMarkerC
 
         description_event.setJustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD)
 
+        event = arguments?.getParcelable(EXTRA_EVENT) as AppEvents
+
+            super.onResume()
+            btn_book.text= if (event.idTrans.isNullOrBlank() || event.idTrans.isNullOrEmpty()) ASISTIRE else ANULAR_RESERVA
+
+            btn_book.setOnClickListener {
+                when(btn_book.text){
+                    ASISTIRE->{
+                        viewModel.saveTransaction( getFromPreferenceManagerTypeString(activity!!, Constants.PMANAGER_TOKEN_USER)!!,event.id)
+                        //onBookButtonClickedListenerDetailFragment?.onBookBtnClickedFragmentDetail("save",event.id)
+                    }
+                    ANULAR_RESERVA->{
+                        viewModel.delTransaction( getFromPreferenceManagerTypeString(activity!!, Constants.PMANAGER_TOKEN_USER)!!,event.idTrans.toString())
+                        //onBookButtonClickedListenerDetailFragment?.onBookBtnClickedFragmentDetail("del",event.idTrans.toString())
+                    }
+                }
+            }
 
 
         go_full_screen_map.setOnClickListener {
             (activity as NucleusActivity).openFullScreenMap(listOf<AppEvents>(event))
         }
-        event = arguments?.getParcelable(EXTRA_EVENT) as AppEvents
-         if (event.idTrans.isNullOrBlank() || event.idTrans.isNullOrEmpty()){
-             btn_book.text = "Asistiré"
-             btn_book.setOnClickListener {
-                 (activity as NucleusActivity).saveTransaction(event.id)
-             }
-         }else{
-             btn_book.text = "Anular Reserva"
-             btn_book.setOnClickListener {
-                 (activity as NucleusActivity).delTransaction(event.idTrans.toString())
-             }
-         }
-
-
-
-
-
 
 
         drawEvent(event)
         initMap()
     }
+    private  fun setUpViewModel(){
+        viewModel = ViewModelProviders.of(this).get(NucleusActivityVM::class.java)
+        bindEvents()
+    }
+    private fun bindEvents(){
+        viewModel.saveTransactionState.observe(this, Observer { saveState->
+            saveState?.let {
+                Toast.makeText(activity!!,"RESERVA REALIZADA", Toast.LENGTH_LONG).show()
+               btn_book.text = ANULAR_RESERVA
+            }
+        })
+
+        viewModel.deleteTransactionState.observe(this, Observer { deleteState ->
+            deleteState?.let {
+                Toast.makeText(activity!!,"RESERVA ANULADA", Toast.LENGTH_LONG).show()
+                btn_book.text = ASISTIRE
+            }
+        })
+    }
+
 
     private fun drawEvent(event: AppEvents?) {
         //Asignamos first_name a la caja de texto
@@ -155,9 +186,6 @@ class EventDetailFragment : Fragment() ,OnMapReadyCallback,  GoogleMap.OnMarkerC
         }
     }
 
-
-
-
     private fun onMapAndPermissionReady(){
         if (map != null && ContextCompat.checkSelfPermission(context!!, Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED){
@@ -195,7 +223,35 @@ class EventDetailFragment : Fragment() ,OnMapReadyCallback,  GoogleMap.OnMarkerC
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLon,15f))
     }
 
+    //########## Code that's associated interface  ###############
+    //Var tipo interfaz
+    private var onBookButtonClickedListenerDetailFragment: OnBookButtonClickedListenerDetailFragment? = null
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        commonAttach(context as? Activity)
+    }
+
+    override fun onAttach(activity: Activity?) {
+        super.onAttach(activity)
+        commonAttach(activity)
+    }
+
+    fun commonAttach(activity: Activity?){
+        if(activity is EventDetailFragment.OnBookButtonClickedListenerDetailFragment)
+            onBookButtonClickedListenerDetailFragment = activity
+        else onBookButtonClickedListenerDetailFragment = null
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        onBookButtonClickedListenerDetailFragment = null
+    }
+//#################   interface for connect fragment with qctivity  ##############
+
+    interface OnBookButtonClickedListenerDetailFragment{
+        fun onBookBtnClickedFragmentDetail(typeAction:String,eventOrTransactionID: String)
+    }
     //private fun init(){
         //2º Inicializamos la variable que apunta al ViewModel de esta activity
         //eventDetailVM = ViewModelProviders.of(this).get(EventDetailVM::class.java)
@@ -205,14 +261,7 @@ class EventDetailFragment : Fragment() ,OnMapReadyCallback,  GoogleMap.OnMarkerC
         //drawEvent()
     //}
 
-    /*private fun bindEvents(){
-        eventDetailVM.userState.observe(this, Observer {userEntity ->
-            userEntity?.let{
-                onUserLoaded(it)
-            }
 
-        })
-    }*/
     /*private fun drawEvent(){
         //Comprobamos si tenemos v alor de usuario
         if(event == null){

@@ -7,21 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_tab_show.*
 import net.forevents.foreventsandroid.presentation.EventList.EventListFragment
 
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
 import net.forevents.foreventsandroid.R
 import net.forevents.foreventsandroid.presentation.Calendar.CalendarEventsFragment
-import net.forevents.foreventsandroid.presentation.Calendar.MyCalendarEvent
 import net.forevents.foreventsandroid.presentation.Maps.FullMapFragment
-import net.forevents.foreventsandroid.presentation.MyEventsFragment
-import net.forevents.foreventsandroid.presentation.Settings.SettingsFragment
 
 
 class TabFragment : Fragment() {

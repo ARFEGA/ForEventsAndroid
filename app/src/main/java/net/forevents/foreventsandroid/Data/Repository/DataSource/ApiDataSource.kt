@@ -48,8 +48,8 @@ class ApiDataSource(private val userService: UserService,
 
     //################  TRANSACTIONS  #####################
 
-    override fun delTransaction(token: String, transactionId: String): Observable<Response<Body>> =
-        userService.deleteTransaction(token,transactionId)
+    override fun delTransaction( token: String,transactionId: String): Observable<Response<Body>> =
+        userService.deleteTransaction(transactionId,token)
 
 
     override fun postTransaction(token: String, eventId: String): Single<ApiTransaction> =
