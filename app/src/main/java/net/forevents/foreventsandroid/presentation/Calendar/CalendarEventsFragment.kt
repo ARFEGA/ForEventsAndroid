@@ -42,14 +42,11 @@ class CalendarEventsFragment : Fragment(), CalendarController {
         fun newInstance(events: List<AppEvents>): CalendarEventsFragment {
             val fragment = CalendarEventsFragment()
             val args = Bundle()
-            //args.putInt(EXTRA_SECTION_NUMBER, sectionNumber)
             args.putParcelableArrayList(EXTRA_EVENTS, ArrayList(events))
             fragment.arguments = args
             return fragment
         }
     }
-
-
 
     private var oldDate: Calendar? = null
     private lateinit var listEvents: List<AppEvents> //Events that comes from Tabfragment
@@ -63,26 +60,18 @@ class CalendarEventsFragment : Fragment(), CalendarController {
     private var loadingTask: LoadingTask? = null
 
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        val view=  inflater.inflate(R.layout.fragment_calendar,container,false)
+        val auxListEvents:ArrayList<AppEvents> = arguments?.getParcelableArrayList(EXTRA_EVENTS)!!
+        listEvents= auxListEvents.toList()
+        return  inflater.inflate(R.layout.fragment_calendar,container,false)
 
 
-        return view
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val auxListEvents:ArrayList<AppEvents> = arguments?.getParcelableArrayList(EXTRA_EVENTS)!!
-
-        listEvents= auxListEvents.toList()
-
-
 
         oldDate = Calendar.getInstance()
         minDate = Calendar.getInstance()
@@ -91,19 +80,21 @@ class CalendarEventsFragment : Fragment(), CalendarController {
         minDate.add(Calendar.MONTH, -1)
         minDate.add(Calendar.YEAR, 0)
         minDate.set(Calendar.DAY_OF_MONTH, 1)
+        //Maximo 31/dic año+1
         maxDate.add(Calendar.YEAR, 1)
-
 
         contentManager = CalendarContentManager(this, agenda_calendar_view, EventAdapter(activity!!))
 
         contentManager.locale = Locale.forLanguageTag("es-ES")
         contentManager.setDateRange(minDate, maxDate)
 
-
+        //Dia máximo de los meses (31)
         val maxLength = Calendar.getInstance().getMaximum(Calendar.DAY_OF_MONTH)
 
         for (i in 1..maxLength) {
+            //Calendario gregoriano
             val day = Calendar.getInstance(Locale.forLanguageTag("es-ES"))
+
             day.timeInMillis = System.currentTimeMillis()
             day.set(Calendar.DAY_OF_MONTH, i)
 

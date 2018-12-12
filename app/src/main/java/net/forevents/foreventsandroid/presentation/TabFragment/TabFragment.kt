@@ -31,40 +31,12 @@ class TabFragment : Fragment() {
             args.putParcelableArrayList(EXTRA_EVENTS, ArrayList(events))
             fragment.arguments = args
             return fragment
-
-
         }
 
     }
 
-
-    //private lateinit var mLifecycleRegistry: LifecycleRegistry
-
     private  lateinit var events :List<AppEvents>
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
-
-
-    /*override fun onStart() {
-        super.onStart()
-        mLifecycleRegistry.markState(Lifecycle.State.STARTED)
-    }
-
-     override fun getLifecycle(): Lifecycle {
-        return mLifecycleRegistry
-    }
-    */
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-       // mLifecycleRegistry = LifecycleRegistry(this)
-       // mLifecycleRegistry.markState(Lifecycle.State.CREATED)
-
-
-    }
-
-
-
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -91,10 +63,6 @@ class TabFragment : Fragment() {
         for(i in 0..group_tabs.tabCount -1)
             group_tabs.getTabAt(i)?.setIcon(iconsForTabs[i])?.setText(titleForTabs[i])
 
-        /*fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }*/
     }
 
 

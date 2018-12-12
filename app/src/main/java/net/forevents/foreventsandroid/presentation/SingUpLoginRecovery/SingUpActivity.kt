@@ -1,6 +1,7 @@
 package net.forevents.foreventsandroid.presentation.SingUpLoginRecovery
 
 
+
 import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
@@ -15,17 +16,11 @@ import androidx.lifecycle.*
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppCity
 import net.forevents.foreventsandroid.R
 import kotlinx.android.synthetic.main.activity_sing_up.*
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
-import net.forevents.foreventsandroid.R.id.create_alias_text
-import net.forevents.foreventsandroid.presentation.EventDetail.EventDetailFragment
-import net.forevents.foreventsandroid.presentation.EventDetail.EventDetailFragment.Companion.EXTRA_EVENT
 import net.forevents.foreventsandroid.presentation.Navigator.Navigator
 
 
+
 class SingUpActivity : AppCompatActivity() , LifecycleOwner {
-
-
-
 
     private lateinit var mLifecycleRegistry: LifecycleRegistry
 
@@ -52,7 +47,6 @@ class SingUpActivity : AppCompatActivity() , LifecycleOwner {
         mLifecycleRegistry.markState(Lifecycle.State.CREATED)
 
         create_btn_sing_up.setOnClickListener {
-
             //todo Asegurar la información necesaria
             //todo registrar user en api
             //todo notificar el resultado del alta y pasar a pantalla de login si el alta ha sido satisfactoria
@@ -74,23 +68,18 @@ class SingUpActivity : AppCompatActivity() , LifecycleOwner {
                 setResult(Activity.RESULT_CANCELED)
                 finish()
             }
-
         }
         setupViewModel()
         autoCompleteTextCity()
-
     }
 
 
     private fun autoCompleteTextCity(){
-
-
         //AutoCompleteText
         adapter = ArrayAdapter(this, android.R.layout.simple_gallery_item, listCities)
         create_city_text.setAdapter(adapter)
         with(create_city_text) {
             threshold = 1
-
         }
 
         create_city_text.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
@@ -105,9 +94,7 @@ class SingUpActivity : AppCompatActivity() , LifecycleOwner {
                 //create_city_text.setText(cities.get(position).city)
                 //create_city_text.setTag(cities.get(position).id)
                 //create_country_text.setText(cities.get(position).country)
-
             }
-
         }
         create_city_text.setOnItemClickListener { parent, view, position, id ->
             create_province_text.setText(cities.get(position).province)
@@ -115,10 +102,6 @@ class SingUpActivity : AppCompatActivity() , LifecycleOwner {
             create_city_text.setText(cities.get(position).city)
             create_city_text.setTag(cities.get(position).id)
             create_country_text.setText(cities.get(position).country)
-
-
-
-
         }
         create_city_text.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
@@ -139,20 +122,11 @@ class SingUpActivity : AppCompatActivity() , LifecycleOwner {
         root_layout.setOnClickListener {
             cerrarTeclado()
         }
-
-
-
-
     }
     private fun cerrarTeclado(){
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
     }
-
-
-
-
-
 
     private fun setupViewModel(){
         viewModel = ViewModelProviders.of(this).get(UserVM::class.java)
@@ -161,11 +135,9 @@ class SingUpActivity : AppCompatActivity() , LifecycleOwner {
     private fun BindEvents(){
         viewModel.createUserState.observe(this, Observer {userCreated->
             userCreated?.let {
-                //showDialog(this,"'CREATE' Datos desde API ","Message: ${it.message} El id: ${it.id}")
                 Navigator.OpenLogin(this,create_alias_text.text.toString())
             }
         })
-
 
         viewModel.citiesListState.observe(this, Observer { citiesList ->
             citiesList?.let{

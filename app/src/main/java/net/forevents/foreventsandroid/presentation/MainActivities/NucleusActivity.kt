@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.app_bar_nucleus_activity.*
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
 import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
 import net.forevents.foreventsandroid.R
-import net.forevents.foreventsandroid.SplashFragment
+import net.forevents.foreventsandroid.Util.SplashFragment
 import net.forevents.foreventsandroid.Util.Constants.FIELDS_MEDIA
 import net.forevents.foreventsandroid.Util.Constants.PMANAGER_ID_USER
 import net.forevents.foreventsandroid.Util.Constants.PMANAGER_TOKEN_USER
@@ -43,7 +43,7 @@ class NucleusActivity : AppCompatActivity(),
 
 
     override fun onListFragmentInteraction(event: AppTransactions) {
-        Toast.makeText(this,event.toString(),Toast.LENGTH_LONG).show()
+        //Toast.makeText(this,event.toString(),Toast.LENGTH_LONG).show()
         viewModel.getEvent(FIELDS_MEDIA,event.eventId,userId)
     }
 
@@ -307,7 +307,9 @@ class NucleusActivity : AppCompatActivity(),
     private fun ñapa(){
         //TODO investigar la causa por la que si no asigno un fragment distinto al de tab's, al volver a la pantalla de login
         //Todo no puedo interactuar con ella
-        supportFragmentManager.beginTransaction().replace(R.id.content_fragment, SplashFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.content_fragment,
+            SplashFragment()
+        ).commit()
     }
 
     fun logOut(){

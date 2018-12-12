@@ -20,6 +20,8 @@
             android:orientation="vertical"
             android:gravity="center"
             android:background="#a8000000"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
     >
         <ImageView
                 android:layout_width="210dp"
