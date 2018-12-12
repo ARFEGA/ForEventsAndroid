@@ -8,4 +8,11 @@
             android:title="LogOut"
             android:icon="@drawable/ic_exit_to_app_white_24dp"
             app:showAsAction="never|ifRoom|collapseActionView" android:layout_width="match_parent"/>
+    <item
+            android:id="@+id/action_search"
+            android:orderInCategory="100"
+            android:title="LogOut"
+            android:icon="@drawable/ic_search_48"
+            app:showAsAction="never|ifRoom|collapseActionView" android:layout_width="match_parent"
+            android:visible="true"/>
 </menu>
