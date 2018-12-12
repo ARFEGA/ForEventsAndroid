@@ -8,7 +8,9 @@ import io.reactivex.Single
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserEntity
 import net.forevents.foreventsandroid.Data.CreateUser.User.*
 import net.forevents.foreventsandroid.Data.Model.Response.OnlyResponse
-import net.forevents.foreventsandroid.Data.Model.Transactions.ApiTransaction
+import net.forevents.foreventsandroid.Data.Model.Transactions.ApiCreateTransaction
+import net.forevents.foreventsandroid.Data.Model.Transactions.ApiGetTransactions
+import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
 import net.forevents.foreventsandroid.Data.Model.UserById.AppUserById
 import net.forevents.foreventsandroid.Data.Repository.DataSource.ApiDataSource
 import retrofit2.Response
@@ -19,7 +21,9 @@ class Repository(private val apiDataSource: ApiDataSource) {
 
     //########### TRANSACTIONS ###################
 
-    fun postTransaction(token: String,eventId:String):Single<ApiTransaction> =
+    fun getTransactionsByUser(token: String):Observable<List<AppTransactions>> = apiDataSource.getTransactionByUser(token)
+
+    fun postTransaction(token: String,eventId:String):Single<ApiCreateTransaction> =
         apiDataSource.postTransaction(token,eventId)
 
     fun delTransaction(token: String,transactionId:String):Observable<Response<Body>> =
@@ -64,6 +68,8 @@ class Repository(private val apiDataSource: ApiDataSource) {
     //########### EVENTS ###################
 
     fun getEventsList(userId:String):Observable<List<AppEvents>> = apiDataSource.getEvents("name description url",userId)
+
+    fun getEvent(media:String,eventId:String,userId:String):Single<AppEvents> = apiDataSource.getEvent(media,eventId,userId)
 
     //########### EVENTS TYPE ###################
 

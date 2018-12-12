@@ -5,11 +5,11 @@ package net.forevents.foreventsandroid.Data.Net
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
-import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.CreateUserApiResponse
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserApiResponse
 import net.forevents.foreventsandroid.Data.CreateUser.User.*
 import net.forevents.foreventsandroid.Data.Model.Response.OnlyResponse
-import net.forevents.foreventsandroid.Data.Model.Transactions.ApiTransaction
+import net.forevents.foreventsandroid.Data.Model.Transactions.ApiCreateTransaction
+import net.forevents.foreventsandroid.Data.Model.Transactions.ApiGetTransactions
 import net.forevents.foreventsandroid.Data.Model.UserById.ApiUserById
 
 import retrofit2.Response
@@ -23,10 +23,13 @@ interface UserService {
 
     //#####################  TRANSACTIONS   ########################################
 
+    @GET("transactions/list")
+    fun getTransactionByUser(@Query("token") token: String):Observable<ApiGetTransactions>
+
     @FormUrlEncoded
     @POST("transactions")
     fun registerTransaction(@Field("event") event: String,
-                            @Query("token") token: String):Single<ApiTransaction>
+                            @Query("token") token: String):Single<ApiCreateTransaction>
 
 
     @DELETE("transactions/{transactionId}")
@@ -40,7 +43,13 @@ interface UserService {
 //#####################  EVENTS   ########################################
 
     @GET("events")
-    fun getEvent(@Query("media") media: String,@Query("userId") userId:String) : Observable<ApiEvents>
+    fun getListEvents(@Query("media") media: String,@Query("userId") userId:String) : Observable<ApiEvents>
+
+    @GET("events")
+    fun getEvent(@Query("media") media: String,
+                 @Query("id") eventId:String,
+                 @Query("userId") userId:String):Single<ApiEvents>
+
 
     @GET("EventTypes")
     fun getEventType() : Observable<ApiEventType>

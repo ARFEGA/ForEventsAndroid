@@ -7,21 +7,22 @@ import io.reactivex.Single
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserEntity
 import net.forevents.foreventsandroid.Data.CreateUser.User.*
 import net.forevents.foreventsandroid.Data.Model.Response.OnlyResponse
-import net.forevents.foreventsandroid.Data.Model.Transactions.ApiTransaction
-import net.forevents.foreventsandroid.Data.Model.UserById.ApiUserById
+import net.forevents.foreventsandroid.Data.Model.Transactions.ApiCreateTransaction
+import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
 import net.forevents.foreventsandroid.Data.Model.UserById.AppUserById
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.Field
 
 
 interface DataSource {
 
     //#####################  TRANSACTIONS   ########################################
 
-    fun postTransaction(token:String,eventId:String):Single<ApiTransaction>
+    fun postTransaction(token:String,eventId:String):Single<ApiCreateTransaction>
 
     fun delTransaction(token:String,transactionId:String):Observable<Response<Body>>
+
+    fun getTransactionByUser(token:String):Observable<List<AppTransactions>>
 
 
     //#####################  USER   ########################################
@@ -58,6 +59,8 @@ interface DataSource {
     fun recoveryPassword(email:String):Single<OnlyResponse.ResultRecoveryPassword>
 
     fun getEvents(media: String, userId:String):Observable<List<AppEvents>>
+
+    fun getEvent(media:String,eventId:String,userId:String):Single<AppEvents>
 
     fun getEventType():Observable<List<AppEventType>>
 

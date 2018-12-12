@@ -1,6 +1,6 @@
 package net.forevents.foreventsandroid.Data.Model.Transactions
 
-data class ApiTransaction(
+data class ApiCreateTransaction(
     val `data`: Data,
     val message: String,
     val ok: Boolean

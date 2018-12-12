@@ -39,7 +39,6 @@ class EventListFragment() : Fragment(), LifecycleOwner {
         fun newInstance(events: List<AppEvents>): EventListFragment {
             val fragment = EventListFragment()
             val args = Bundle()
-            //args.putInt(EXTRA_SECTION_NUMBER, sectionNumber)
             args.putParcelableArrayList(EXTRA_EVENTS, ArrayList(events))
             fragment.arguments = args
             return fragment
@@ -80,9 +79,6 @@ class EventListFragment() : Fragment(), LifecycleOwner {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
 
         mLifecycleRegistry = LifecycleRegistry(this)
         mLifecycleRegistry.markState(Lifecycle.State.CREATED)

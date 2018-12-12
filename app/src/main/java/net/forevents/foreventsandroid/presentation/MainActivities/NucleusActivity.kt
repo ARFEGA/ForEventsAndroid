@@ -15,8 +15,10 @@ import androidx.lifecycle.*
 import kotlinx.android.synthetic.main.activity_nucleus_activity.*
 import kotlinx.android.synthetic.main.app_bar_nucleus_activity.*
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
+import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
 import net.forevents.foreventsandroid.R
 import net.forevents.foreventsandroid.SplashFragment
+import net.forevents.foreventsandroid.Util.Constants.FIELDS_MEDIA
 import net.forevents.foreventsandroid.Util.Constants.PMANAGER_ID_USER
 import net.forevents.foreventsandroid.Util.Constants.PMANAGER_TOKEN_USER
 import net.forevents.foreventsandroid.Util.getFromPreferenceManagerTypeString
@@ -26,12 +28,10 @@ import net.forevents.foreventsandroid.presentation.EventDetail.EventDetailFragme
 import net.forevents.foreventsandroid.presentation.EventList.EventListFragment
 import net.forevents.foreventsandroid.presentation.MyEvents.MyEventsFragment
 import net.forevents.foreventsandroid.presentation.Maps.FullMapFragment
-import net.forevents.foreventsandroid.Pruebas.MyOldEventsFragment
 import net.forevents.foreventsandroid.presentation.Settings.SettingsFragment
 import net.forevents.foreventsandroid.presentation.SingUpLoginRecovery.LoginActivity
 import net.forevents.foreventsandroid.presentation.SingUpLoginRecovery.UpdateUserFragment
 import net.forevents.foreventsandroid.presentation.TabFragment.TabFragment
-import net.forevents.foreventsandroid.presentation.MyEvents.dummy.DummyContent
 
 class NucleusActivity : AppCompatActivity(),
     LifecycleOwner,
@@ -41,15 +41,16 @@ class NucleusActivity : AppCompatActivity(),
     MyEventsFragment.OnListFragmentInteractionListener {
 
 
-    override fun onListFragmentInteraction(event: AppEvents?) {
+    override fun onListFragmentInteraction(event: AppTransactions) {
         Toast.makeText(this,event.toString(),Toast.LENGTH_LONG).show()
+        viewModel.getEvent(FIELDS_MEDIA,event.eventId,userId)
     }
 
     private lateinit var mLifecycleRegistry: LifecycleRegistry
     private lateinit var viewModel : NucleusActivityVM
     private lateinit var events:List<AppEvents>
     private lateinit var userId:String
-
+    private lateinit var token:String
 
     override fun onStart() {
         super.onStart()
@@ -64,6 +65,7 @@ class NucleusActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nucleus_activity)
         userId=getFromPreferenceManagerTypeString(this, PMANAGER_ID_USER)!!
+        token= getFromPreferenceManagerTypeString(this, PMANAGER_TOKEN_USER)!!
         mLifecycleRegistry = LifecycleRegistry(this)
         mLifecycleRegistry.markState(Lifecycle.State.CREATED)
 
@@ -121,7 +123,7 @@ class NucleusActivity : AppCompatActivity(),
             }
         })
 
-        viewModel.saveTransactionState.observe(this, Observer { saveState->
+        viewModel.saveCreateTransactionState.observe(this, Observer { saveState->
             saveState?.let {
                 Toast.makeText(this,"RESERVA REALIZADA",Toast.LENGTH_LONG).show()
                 //EventDetailFragment().responseFromSaveTransation(true)
@@ -134,9 +136,21 @@ class NucleusActivity : AppCompatActivity(),
 
             }
          })
+        viewModel.getTransactionsByUserState.observe(this, Observer { myEvents->
+            myEvents?.let {
+                supportFragmentManager.beginTransaction()
+                    .replace(
+                        R.id.content_fragment,
+                        MyEventsFragment.newInstance(it)
+                    ).commit()
 
-
-
+            }
+        })
+        viewModel.getEventState.observe(this, Observer { event->
+            event?.let {
+                openDetailScreen(it)
+            }
+        })
     }
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -173,16 +187,11 @@ class NucleusActivity : AppCompatActivity(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            //######## EVENTOS ##########
             R.id.nav_gallery -> {
                 viewModel.loadEventList(userId)
             }
             R.id.nav_mis_eventos -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(
-                        R.id.content_fragment,
-                        MyEventsFragment.newInstance(events)
-                    ).commit()
+                viewModel.getTransactionsByUser(token)
             }
 
             R.id.nav_settings_searches -> {
@@ -193,11 +202,7 @@ class NucleusActivity : AppCompatActivity(),
                     ).commit()
             }
             R.id.nav_favorite_searches -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(
-                        R.id.content_fragment,
-                        MyOldEventsFragment()
-                    ).commit()
+               viewModel.getTransactionsByUser(token)
             }
 
             R.id.nav_profile_update-> {
@@ -246,8 +251,6 @@ class NucleusActivity : AppCompatActivity(),
         }
 
     }
-
-
 
     fun openDetailScreen(event: AppEvents){
         supportFragmentManager.beginTransaction()

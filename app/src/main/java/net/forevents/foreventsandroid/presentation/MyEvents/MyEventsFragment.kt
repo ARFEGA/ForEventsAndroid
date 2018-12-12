@@ -9,54 +9,46 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import kotlinx.android.synthetic.main.fragment_item_list.*
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
+import net.forevents.foreventsandroid.Data.Model.Transactions.ApiGetTransactions
+import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
+import net.forevents.foreventsandroid.Data.Model.Transactions.ResultTransactions
 import net.forevents.foreventsandroid.R
 import net.forevents.foreventsandroid.presentation.EventList.EventListFragment
 
-import net.forevents.foreventsandroid.presentation.MyEvents.dummy.DummyContent
-import net.forevents.foreventsandroid.presentation.MyEvents.dummy.DummyContent.DummyItem
+import net.forevents.foreventsandroid.presentation.MainActivities.NucleusActivityVM
 
-/**
- * A fragment representing a list of Items.
- * Activities containing this fragment MUST implement the
- * [MyEventsFragment.OnListFragmentInteractionListener] interface.
- */
 class MyEventsFragment : Fragment() {
 
     companion object {
-        private val EXTRA_EVENTS="EXTRA_EVENTS"
+        val EXTRA_EVENTS = "EXTRA_EVENTS"
 
-        fun newInstance(events: List<AppEvents>): MyEventsFragment {
+        fun newInstance(my_events:List<AppTransactions>): MyEventsFragment {
             val fragment = MyEventsFragment()
             val args = Bundle()
-            args.putParcelableArrayList(EXTRA_EVENTS, ArrayList(events))
+            args.putParcelableArrayList(EXTRA_EVENTS,ArrayList(my_events))
             fragment.arguments = args
             return fragment
         }
     }
-
-
-    // TODO: Customize parameters
-
-    private lateinit var listEvents: List<AppEvents>
-
+    private lateinit var listEvents: List<AppTransactions>//= emptyList<AppTransactions>().toMutableList()
     private var bookingEvents = 1
 
     private var listener: OnListFragmentInteractionListener? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
 
-        val auxListEvents:ArrayList<AppEvents> = arguments?.getParcelableArrayList(EXTRA_EVENTS)!!
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+        val auxListEvents:ArrayList<AppTransactions> = arguments?.getParcelableArrayList(EXTRA_EVENTS)!!
 
         listEvents= auxListEvents.toList()
-
-
         // Set the adapter
         if (view is RecyclerView) {
+
             with(view) {
                 layoutManager = when {
                     bookingEvents <= 1 -> LinearLayoutManager(context)
@@ -98,7 +90,7 @@ class MyEventsFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: AppEvents?)
+        fun onListFragmentInteraction(event: AppTransactions)
     }
 
 }

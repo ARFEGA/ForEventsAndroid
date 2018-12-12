@@ -1,16 +1,13 @@
 package net.forevents.foreventsandroid.presentation.servicelocator
 
 
-import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppCreateUserMapper
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.OutUserEntityMapper
 import net.forevents.foreventsandroid.Data.CreateUser.User.OutAppUserMapper
 import net.forevents.foreventsandroid.Data.Net.UserService
 import net.forevents.foreventsandroid.Data.Repository.Repository
 import net.forevents.foreventsandroid.Util.SettingsManager
 import net.forevents.foreventsandroid.BuildConfig
-import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppCityMapper
-import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppEventTypeMapper
-import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppEventsMapper
+import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.*
 import net.forevents.foreventsandroid.Data.CreateUser.User.OutAppUserByIdMapper
 import net.forevents.foreventsandroid.Data.Repository.DataSource.ApiDataSource
 import okhttp3.OkHttpClient
@@ -49,6 +46,7 @@ object Inject {
     val outAppCityMapper = OutAppCityMapper()
     val outAppEventTypeMapper = OutAppEventTypeMapper()
     val outAppUserByIdMapper = OutAppUserByIdMapper()
+    val outAppTransactionsMapper = OutAppTransactionsMapper()
 
     private val apiDataSource = ApiDataSource(
         userService,
@@ -58,7 +56,8 @@ object Inject {
         outAppEventsMapper,
         outAppCityMapper,
         outAppEventTypeMapper,
-        outAppUserByIdMapper
+        outAppUserByIdMapper,
+        outAppTransactionsMapper
     )
     val repository = Repository(apiDataSource)
 

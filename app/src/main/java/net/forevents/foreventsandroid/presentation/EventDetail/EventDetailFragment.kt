@@ -118,7 +118,7 @@ class EventDetailFragment : Fragment() ,OnMapReadyCallback,  GoogleMap.OnMarkerC
         bindEvents()
     }
     private fun bindEvents(){
-        viewModel.saveTransactionState.observe(this, Observer { saveState->
+        viewModel.saveCreateTransactionState.observe(this, Observer { saveState->
             saveState?.let {
                 Toast.makeText(activity!!,"RESERVA REALIZADA", Toast.LENGTH_LONG).show()
                btn_book.text = ANULAR_RESERVA

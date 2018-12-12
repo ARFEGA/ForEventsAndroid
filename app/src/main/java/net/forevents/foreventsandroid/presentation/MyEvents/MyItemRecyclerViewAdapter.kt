@@ -10,12 +10,12 @@ import com.bumptech.glide.Glide
 import net.forevents.foreventsandroid.R
 import net.forevents.foreventsandroid.presentation.MyEvents.MyEventsFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.fragment_my_events_list.view.*
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
+import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
 
 
 
 class MyItemRecyclerViewAdapter(
-    private val mValues: List<AppEvents>,
+    private val mValues: List<AppTransactions>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -23,10 +23,10 @@ class MyItemRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as AppEvents
+            val event = v.tag as AppTransactions
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
-            mListener?.onListFragmentInteraction(item)
+            mListener?.onListFragmentInteraction(event)
         }
     }
 
@@ -37,16 +37,16 @@ class MyItemRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position]
-        holder.eventName.text=item.name
-        holder.eventAddress.text = "${item.city} (${item.province})"
-        holder.eventDate.text = item.begin_date
+        val event = mValues[position]
+        holder.eventName.text=event.eventName
+        holder.eventAddress.text = "${event.city} (${event.province})"
+        holder.eventDate.text = event.begin_date
         Glide.with(holder.eventImg)
-            .load(item.imgUrl)
+            .load(event.url)
             .into(holder.eventImg)
 
         with(holder.mView) {
-            tag = item
+            tag = event
             setOnClickListener(mOnClickListener)
         }
     }

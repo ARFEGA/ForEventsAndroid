@@ -5,31 +5,22 @@ package net.forevents.foreventsandroid.Data.Repository.DataSource
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
-import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppCityMapper
+import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.*
 
 
-import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppCreateUserMapper
-import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppEventTypeMapper
-import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.OutAppEventsMapper
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.OutUserEntityMapper
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserEntity
 import net.forevents.foreventsandroid.Data.CreateUser.User.*
 import net.forevents.foreventsandroid.Data.Model.Response.OnlyResponse
-import net.forevents.foreventsandroid.Data.Model.Transactions.ApiTransaction
-import net.forevents.foreventsandroid.Data.Model.UserById.ApiUserById
+import net.forevents.foreventsandroid.Data.Model.Transactions.ApiCreateTransaction
+import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
 import net.forevents.foreventsandroid.Data.Model.UserById.AppUserById
 import net.forevents.foreventsandroid.Data.Net.UserService
 import net.forevents.foreventsandroid.presentation.servicelocator.Inject
 import net.forevents.foreventsandroid.presentation.servicelocator.Inject.outAppCityMapper
-import net.forevents.foreventsandroid.presentation.servicelocator.Inject.outAppCreateUserMapper
-import net.forevents.foreventsandroid.presentation.servicelocator.Inject.outAppEventTypeMapper
-import net.forevents.foreventsandroid.presentation.servicelocator.Inject.outAppEventsMapper
-import net.forevents.foreventsandroid.presentation.servicelocator.Inject.outAppUserByIdMapper
-import net.forevents.foreventsandroid.presentation.servicelocator.Inject.outAppUserMapper
 import net.forevents.foreventsandroid.presentation.servicelocator.Inject.userService
 import retrofit2.Response
 import retrofit2.http.Body
-import java.io.Serializable
 import java.util.concurrent.TimeUnit
 
 
@@ -42,17 +33,26 @@ class ApiDataSource(private val userService: UserService,
                     private val outAppEventsMapper: OutAppEventsMapper,
                     private val outAppCityMapper:OutAppCityMapper,
                     private val outAppEventTypeMapper:OutAppEventTypeMapper,
-                    private val outAppUserByIdMapper: OutAppUserByIdMapper
+                    private val outAppUserByIdMapper: OutAppUserByIdMapper,
+                    private val outAppTransactionsMapper:OutAppTransactionsMapper
 ): DataSource {
 
 
+
     //################  TRANSACTIONS  #####################
+
+    override fun getTransactionByUser(token: String): Observable<List<AppTransactions>> =
+        userService.getTransactionByUser(token)
+            .map {
+                outAppTransactionsMapper.transformList(it.result)
+            }
+
 
     override fun delTransaction( token: String,transactionId: String): Observable<Response<Body>> =
         userService.deleteTransaction(transactionId,token)
 
 
-    override fun postTransaction(token: String, eventId: String): Single<ApiTransaction> =
+    override fun postTransaction(token: String, eventId: String): Single<ApiCreateTransaction> =
         userService.registerTransaction(eventId,token)
 
 
@@ -113,7 +113,7 @@ class ApiDataSource(private val userService: UserService,
     //################  EVENTS  #####################
 
     override fun getEvents(media:String,userId:String): Observable<List<AppEvents>> =
-            userService.getEvent(media,userId)
+            userService.getListEvents(media,userId)
                 .map{
                 outAppEventsMapper.transformList(it.result)
             }
@@ -125,6 +125,13 @@ class ApiDataSource(private val userService: UserService,
             .map {
                 outAppEventTypeMapper.transformList(it.result)
             }
+
+    override fun getEvent(media: String, eventId: String, userId: String): Single<AppEvents> =
+        userService.getEvent(media,eventId,userId)
+            .map{
+                outAppEventsMapper.transform(it.result[0])
+            }
+
 
     //################   CITY   #####################
 
