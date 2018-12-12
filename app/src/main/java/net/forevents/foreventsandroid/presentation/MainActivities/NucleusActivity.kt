@@ -41,6 +41,7 @@ class NucleusActivity : AppCompatActivity(),
     MyEventsFragment.OnListFragmentInteractionListener {
 
 
+
     override fun onListFragmentInteraction(event: AppTransactions) {
         Toast.makeText(this,event.toString(),Toast.LENGTH_LONG).show()
         viewModel.getEvent(FIELDS_MEDIA,event.eventId,userId)
@@ -74,12 +75,6 @@ class NucleusActivity : AppCompatActivity(),
         viewModel.loadEventList(userId)
 
 
-
-        /*fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }*/
-
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar,
             R.string.navigation_drawer_open,
@@ -89,6 +84,9 @@ class NucleusActivity : AppCompatActivity(),
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+        this.title = "Eventos disponibles"
+
     }
 
     private  fun setUpViewModel(){
@@ -191,10 +189,12 @@ class NucleusActivity : AppCompatActivity(),
                 viewModel.loadEventList(userId)
             }
             R.id.nav_mis_eventos -> {
+                this.title ="Eventos Reservados"
                 viewModel.getTransactionsByUser(token)
             }
 
             R.id.nav_settings_searches -> {
+                this.title ="Configuración busquedas"
                 supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.content_fragment,
@@ -202,10 +202,13 @@ class NucleusActivity : AppCompatActivity(),
                     ).commit()
             }
             R.id.nav_favorite_searches -> {
+                this.title ="Busquedas favoritas"
                viewModel.getTransactionsByUser(token)
             }
 
             R.id.nav_profile_update-> {
+
+                this.title ="Actualización perfil"
                 supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.content_fragment,
@@ -213,6 +216,7 @@ class NucleusActivity : AppCompatActivity(),
                     ).commit()
             }
             R.id.nav_profile_delete ->{
+                this.title ="Borrado de perfil"
                 showDeleteDialog(this)
             }
             R.id.nav_share -> {
@@ -285,14 +289,9 @@ class NucleusActivity : AppCompatActivity(),
         }
         // Set the alert dialog positive/yes button
         builder.setPositiveButton("BORRAR PERFIL",resultDialogClickListener)
-        // Set the alert dialog negative/no button
-        //builder.setNegativeButton("NO",dialogClickListener)
-        // Set the alert dialog neutral/cancel button
         builder.setNeutralButton("CANCELAR",resultDialogClickListener)
         // Initialize the AlertDialog using builder object
         dialog = builder.create()
-        //dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.WHITE)
-        //dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(Color.WHITE)
         dialog.setIcon(R.drawable.delete_user)
         // Finally, display the alert dialog
         dialog.show()

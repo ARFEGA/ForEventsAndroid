@@ -1,8 +1,11 @@
 package net.forevents.foreventsandroid.presentation.MainActivities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
@@ -24,6 +27,7 @@ import net.forevents.foreventsandroid.presentation.SingUpLoginRecovery.LoginActi
 import net.forevents.foreventsandroid.presentation.SingUpLoginRecovery.SingUpActivity
 
 
+
 class MainActivity : AppCompatActivity() {
 companion object {
     val TOKEN_FIREBASE = "TOKEN_FIREBASE"
@@ -41,7 +45,7 @@ companion object {
         setContentView(R.layout.activity_main)
 
         getTokenFireBase()
-        //subscribeFirebaseTopic()
+        subscribeFirebaseTopic()
         //If there's token, go to nucleusActivity
         getFromPreferenceManagerTypeString(this,PMANAGER_TOKEN_USER)?.let {
             if(it != "") {
@@ -49,11 +53,6 @@ companion object {
                 Navigator.OpenNucleusActivity(this)
             }
         }
-
-
-
-
-
         btn_login.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
@@ -65,7 +64,14 @@ companion object {
 
     }
 
+
+
+
+
     private fun getTokenFireBase(){
+
+
+
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {

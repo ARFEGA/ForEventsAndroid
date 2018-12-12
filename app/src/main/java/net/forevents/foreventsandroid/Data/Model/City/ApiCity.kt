@@ -22,7 +22,7 @@ data class ResultCities(
 
 data class LocationCity(
     @SerializedName("coordinates") val coordinates: List<Double>
-    //val type: String
+
 )
 
 

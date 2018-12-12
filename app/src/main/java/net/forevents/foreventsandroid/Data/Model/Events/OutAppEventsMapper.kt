@@ -4,6 +4,7 @@ import net.forevents.foreventsandroid.Data.CreateUser.Mapper
 import net.forevents.foreventsandroid.Data.CreateUser.User.ApiEvents
 import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
 import net.forevents.foreventsandroid.Data.CreateUser.User.ResultEvents
+import net.forevents.foreventsandroid.Util.formatoFechaZ
 import net.forevents.foreventsandroid.Util.stringNullToString
 
 
@@ -23,7 +24,7 @@ class OutAppEventsMapper: Mapper<ResultEvents, AppEvents> {
                             "" else input.media[0].description ,
             if (input.media.isNullOrEmpty() || input.media[0].url.isNullOrBlank())
                 "" else input.media[0].url,
-            stringNullToString(input.begin_date),
+            formatoFechaZ(stringNullToString(input.begin_date)),
             stringNullToString(input.address),
             stringNullToString(input.city),
             stringNullToString(input.province),
