@@ -1,6 +1,12 @@
 # Created by https://www.gitignore.io/api/gradle,kotlin,android,androidstudio
 # Edit at https://www.gitignore.io/?templates=gradle,kotlin,android,androidstudio
 
+
+
+##zip creados al pasar el proyecto a androidx ##
+*.zip
+
+
 ### Android ###
 # Built application files
 *.apk
