@@ -6,12 +6,11 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
+
 import androidx.lifecycle.*
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_sing_up.*
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppUser
+
+import net.forevents.foreventsandroid.Data.Model.LoginUser.AppUser
 import net.forevents.foreventsandroid.presentation.Navigator.Navigator
 import net.forevents.foreventsandroid.R
 import net.forevents.foreventsandroid.R.id.login_user_text
@@ -104,7 +103,7 @@ class LoginActivity : AppCompatActivity(),LifecycleOwner {
         login_user_text.requestFocus()
     }
 
-    private fun saveDataInPreferenceManager(datUser:AppUser){
+    private fun saveDataInPreferenceManager(datUser: AppUser){
         setToPreferenceManagerTypeString(this, PMANAGER_ID_USER,datUser.id)
         setToPreferenceManagerTypeString(this, PMANAGER_TOKEN_USER,datUser.token)
         Navigator.OpenNucleusActivity(this)

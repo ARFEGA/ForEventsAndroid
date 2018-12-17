@@ -11,7 +11,8 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_tab_show.*
 import net.forevents.foreventsandroid.presentation.EventList.EventListFragment
 
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
+
+import net.forevents.foreventsandroid.Data.Model.Events.AppEvents
 import net.forevents.foreventsandroid.R
 import net.forevents.foreventsandroid.presentation.Calendar.CalendarEventsFragment
 import net.forevents.foreventsandroid.presentation.Maps.FullMapFragment

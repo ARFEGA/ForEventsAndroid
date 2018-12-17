@@ -54,12 +54,12 @@ fun showDeleteDialog_(context: Context){
     // Set the alert dialog neutral/cancel button
     builder.setNeutralButton("CANCELAR",resultDialogClickListener)
 
-
-    // Initialize the AlertDialog using builder object
-    dialog = builder.create()
     dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.WHITE)
     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.WHITE)
     dialog.setIcon(R.drawable.delete_user)
+    // Initialize the AlertDialog using builder object
+    dialog = builder.create()
+
     // Finally, display the alert dialog
     dialog.show()
 

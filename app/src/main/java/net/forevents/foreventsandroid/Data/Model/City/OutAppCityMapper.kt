@@ -1,7 +1,9 @@
-package net.forevents.foreventsandroid.Data.CreateUser.CreateUser
+package net.forevents.foreventsandroid.Data.Model.City
 
 import net.forevents.foreventsandroid.Data.CreateUser.Mapper
 import net.forevents.foreventsandroid.Data.CreateUser.User.*
+import net.forevents.foreventsandroid.Data.Model.City.AppCity
+import net.forevents.foreventsandroid.Data.Model.City.ResultCities
 import net.forevents.foreventsandroid.Util.stringNullToString
 
 

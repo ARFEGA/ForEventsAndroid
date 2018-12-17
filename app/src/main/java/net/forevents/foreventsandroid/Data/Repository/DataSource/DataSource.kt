@@ -5,7 +5,11 @@ import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserEntity
-import net.forevents.foreventsandroid.Data.CreateUser.User.*
+import net.forevents.foreventsandroid.Data.Model.City.AppCity
+import net.forevents.foreventsandroid.Data.Model.CreateUser.AppCreateUser
+import net.forevents.foreventsandroid.Data.Model.EventType.AppEventType
+import net.forevents.foreventsandroid.Data.Model.Events.AppEvents
+import net.forevents.foreventsandroid.Data.Model.LoginUser.AppUser
 import net.forevents.foreventsandroid.Data.Model.Response.OnlyResponse
 import net.forevents.foreventsandroid.Data.Model.Transactions.ApiCreateTransaction
 import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
@@ -58,7 +62,7 @@ interface DataSource {
 
     fun recoveryPassword(email:String):Single<OnlyResponse.ResultRecoveryPassword>
 
-    fun getEvents(media: String, userId:String):Observable<List<AppEvents>>
+    fun getEvents(media: String, userId:String,eventTypeId:String,location:String):Observable<List<AppEvents>>
 
     fun getEvent(media:String,eventId:String,userId:String):Single<AppEvents>
 

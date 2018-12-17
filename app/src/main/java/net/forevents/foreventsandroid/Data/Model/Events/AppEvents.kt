@@ -1,4 +1,4 @@
-package net.forevents.foreventsandroid.Data.CreateUser.User
+package net.forevents.foreventsandroid.Data.Model.Events
 
 import android.os.Parcel
 import android.os.Parcelable

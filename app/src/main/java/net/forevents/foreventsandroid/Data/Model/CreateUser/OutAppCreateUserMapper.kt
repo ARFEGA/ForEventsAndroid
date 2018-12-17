@@ -1,9 +1,6 @@
-package net.forevents.foreventsandroid.Data.CreateUser.CreateUser
+package net.forevents.foreventsandroid.Data.Model.CreateUser
 
 import net.forevents.foreventsandroid.Data.CreateUser.Mapper
-import net.forevents.foreventsandroid.Data.CreateUser.User.ApiCreateUser
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppCreateUser
-
 
 class OutAppCreateUserMapper :
     Mapper<ApiCreateUser, AppCreateUser> {

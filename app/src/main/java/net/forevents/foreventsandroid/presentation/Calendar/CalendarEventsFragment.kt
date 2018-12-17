@@ -14,9 +14,7 @@ import android.os.AsyncTask
 import com.ognev.kotlin.agendacalendarview.CalendarController
 import com.ognev.kotlin.agendacalendarview.CalendarManager
 import com.ognev.kotlin.agendacalendarview.builder.CalendarContentManager
-import com.ognev.kotlin.agendacalendarview.models.*
-import com.ognev.kotlin.agendacalendarview.render.DefaultEventAdapter
-import com.ognev.kotlin.agendacalendarview.utils.DateHelper
+
 import net.forevents.foreventsandroid.R
 import java.util.*
 import com.ognev.kotlin.agendacalendarview.models.CalendarEvent
@@ -24,11 +22,8 @@ import com.ognev.kotlin.agendacalendarview.models.DayItem
 import com.ognev.kotlin.agendacalendarview.models.IDayItem
 
 import kotlinx.android.synthetic.main.fragment_calendar.*
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
-import net.forevents.foreventsandroid.Util.showDialog
-import net.forevents.foreventsandroid.presentation.EventList.EventListFragment
 
-import java.text.SimpleDateFormat
+import net.forevents.foreventsandroid.Data.Model.Events.AppEvents
 
 import kotlin.collections.ArrayList
 
@@ -120,7 +115,7 @@ class CalendarEventsFragment : Fragment(), CalendarController {
     override fun getEventLayout() = R.layout.fragment_calendar_event
 
     override fun onDaySelected(dayItem: IDayItem) {
-        showDialog(activity!!,"Pulsado un día",dayItem.date.toString())
+        //showDialog(activity!!,"Pulsado un día",dayItem.date.toString())
         Toast.makeText(activity!!, "Pulsado un dia", Toast.LENGTH_LONG)
     }
 

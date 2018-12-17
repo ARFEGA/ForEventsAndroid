@@ -1,7 +1,7 @@
 package net.forevents.foreventsandroid.Data.Model.Transactions
 
 import com.google.gson.annotations.SerializedName
-import net.forevents.foreventsandroid.Data.CreateUser.User.ResultEvents
+
 
 data class ApiGetTransactions(
     @SerializedName("ok")val ok: Boolean,

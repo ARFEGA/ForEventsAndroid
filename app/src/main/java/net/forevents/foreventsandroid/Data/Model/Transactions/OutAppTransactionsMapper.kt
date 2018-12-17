@@ -1,9 +1,6 @@
-package net.forevents.foreventsandroid.Data.CreateUser.CreateUser
+package net.forevents.foreventsandroid.Data.Model.Transactions
 
 import net.forevents.foreventsandroid.Data.CreateUser.Mapper
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
-import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
-import net.forevents.foreventsandroid.Data.Model.Transactions.ResultTransactions
 import net.forevents.foreventsandroid.Util.formatoFechaZ
 import net.forevents.foreventsandroid.Util.stringNullToString
 

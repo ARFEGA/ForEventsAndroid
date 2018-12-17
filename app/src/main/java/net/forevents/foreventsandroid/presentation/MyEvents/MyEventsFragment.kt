@@ -9,17 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import kotlinx.android.synthetic.main.fragment_item_list.*
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
-import net.forevents.foreventsandroid.Data.Model.Transactions.ApiGetTransactions
-import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
-import net.forevents.foreventsandroid.Data.Model.Transactions.ResultTransactions
-import net.forevents.foreventsandroid.R
-import net.forevents.foreventsandroid.presentation.EventList.EventListFragment
 
-import net.forevents.foreventsandroid.presentation.MainActivities.NucleusActivityVM
+
+import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
+
+import net.forevents.foreventsandroid.R
+
 
 class MyEventsFragment : Fragment() {
 

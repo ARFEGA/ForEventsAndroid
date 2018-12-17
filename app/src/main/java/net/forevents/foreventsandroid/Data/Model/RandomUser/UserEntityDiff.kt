@@ -1,8 +1,6 @@
 package net.forevents.foreventsandroid.Data.CreateUser.RandomUser
 
 import androidx.recyclerview.widget.DiffUtil
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
-
 
 class UserEntityDiff:DiffUtil.ItemCallback<UserEntity>() {
     override fun areItemsTheSame(oldItem: UserEntity, newItem: UserEntity)=

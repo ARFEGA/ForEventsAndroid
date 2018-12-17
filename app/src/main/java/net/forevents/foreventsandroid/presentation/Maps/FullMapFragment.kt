@@ -20,7 +20,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
+import net.forevents.foreventsandroid.Data.Model.Events.AppEvents
 import net.forevents.foreventsandroid.R
 import net.forevents.foreventsandroid.presentation.MainActivities.NucleusActivity
 import net.forevents.foreventsandroid.presentation.TabFragment.TabFragment
@@ -46,7 +46,6 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
             events.map {  arrayListEvents.add(it)}
             val fragment = FullMapFragment()
             val args = Bundle()
-            //args.putInt(ARG_SECTION_NUMBER, sectionNumber)
             args.putParcelableArrayList(EXTRA_EVENTS,arrayListEvents)
             fragment.arguments = args
             return fragment
@@ -56,7 +55,7 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
 
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var lastLocation: Location
+
     private lateinit var events:List<AppEvents>
     private lateinit var marker: Marker
     //Inicio lista de tuplas vacía
@@ -82,12 +81,7 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         events =  (arguments?.getParcelableArrayList(EXTRA_EVENTS)!!)
-
-        //for(i in 0..events.size -1)  tuplaEvents.add(i,Pair(i,events[i]))
-
         events.map { tuplaEvents.add(tuplaEvents.size  ,Pair(tuplaEvents.size ,it)) }
-       // println("EVENTS: ${tuplaEvents?.get(1)?.second}")
-        //println("EVENTS: ${tuplaEvents?.get(4)?.second}")
 
     }
 
@@ -95,10 +89,9 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
 
     override fun onInfoWindowClick(marker: Marker?) {
         marker?.let {
-            Toast.makeText(activity, marker?.title, Toast.LENGTH_LONG).show()
+            //Toast.makeText(activity, marker?.title, Toast.LENGTH_LONG).show()
             (activity as NucleusActivity).openDetailScreen(tuplaEvents.get(marker.zIndex.toInt()).second)
         }
-        //Navigator.OpenEventDetail(activity!!, AppEvents(true,"https://randomuser.me/api/portraits/men/75.jpg"))
     }
 
     override fun onMarkerClick(marker: Marker?):Boolean{
@@ -107,14 +100,8 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
         marker?.let{
             marker.zIndex += .0f
             Log.d("MARKER:","POSITION:${it.snippet} zIndex:${it.zIndex}  >>>>>>>>>  ${tuplaEvents.get(it.zIndex.toInt()).second.name}")
-            Toast.makeText(context, "${marker.title} z-index set to ${marker.zIndex}",Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "${marker.title} z-index set to ${marker.zIndex}",Toast.LENGTH_SHORT).show()
         }
-
-
-
-
-
-
         return false
     }
 
@@ -162,7 +149,29 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
         //map.mapType = GoogleMap.MAP_TYPE_SATELLITE
         //map.mapType = GoogleMap.MAP_TYPE_NONE
         // 2
-        /*
+
+        //If there's  events, if tupleEvents is no empty
+        if (!tuplaEvents.isEmpty()){
+            //we fix the points on the map
+            tuplaEvents.map {
+                placeMarkerOnMap(it)
+            }
+            //And then we fix the view on the first coordinate
+            fixCameraMap(LatLng(events[0].latitude, events[0].longitude))
+        }else{//Take current location from device
+            myCurrentLocation()?.let {
+                fixCameraMap(LatLng(it.latitude, it.longitude))
+            }
+        }
+    }
+
+    private fun fixCameraMap(coordinate:LatLng){
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 12f))
+    }
+    //An fun that creates a marker
+
+    private fun myCurrentLocation():Location?{
+        var lastLocation: Location? = null
         fusedLocationClient.lastLocation.addOnSuccessListener(activity!!){location ->
             //Got last known location. In some rare situations this can be nul.
             // 3
@@ -171,21 +180,13 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
                 val currentLatLng = LatLng(location.latitude, location.longitude)
                 //val icon = BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(resources,R.mipmap.ic_user_location))
                 //map.addMarker(MarkerOptions().position(currentLatLng).title("My home").icon(icon))
-                placeMarkerOnMap(currentLatLng)
+                //placeMarkerOnMap(currentLatLng)
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
             }
         }
-        */
-        tuplaEvents.map {
-            placeMarkerOnMap(it)
-
-        }
-        val coordinates = LatLng(events[0].latitude, events[0].longitude)
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 12f))
-
+        return lastLocation
     }
 
-    //An fun that creates a marker
 
     private fun placeMarkerOnMap(event:Pair<Int,AppEvents>) {
         // 1
@@ -201,8 +202,6 @@ class FullMapFragment :Fragment(), OnMapReadyCallback,GoogleMap.OnMarkerClickLis
         markerOptions.title("${event.second.city}")
         markerOptions.zIndex(event.first + 0f)
         markerOptions.flat(false)
-            //fromBitmap(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)))
-        // 3
         map.addMarker(markerOptions)
 
     }

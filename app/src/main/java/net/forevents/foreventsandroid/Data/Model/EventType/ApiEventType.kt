@@ -1,5 +1,4 @@
-package net.forevents.foreventsandroid.Data.CreateUser.User
-
+package net.forevents.foreventsandroid.Data.Model.EventType
 import com.google.gson.annotations.SerializedName
 
 

@@ -14,16 +14,14 @@ import android.widget.Toast
 import androidx.lifecycle.*
 import kotlinx.android.synthetic.main.activity_nucleus_activity.*
 import kotlinx.android.synthetic.main.app_bar_nucleus_activity.*
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
+import net.forevents.foreventsandroid.Data.Model.Events.AppEvents
+import net.forevents.foreventsandroid.Data.Model.PreferenceSearches
 import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
 import net.forevents.foreventsandroid.R
-import net.forevents.foreventsandroid.Util.SplashFragment
+import net.forevents.foreventsandroid.Util.*
 import net.forevents.foreventsandroid.Util.Constants.FIELDS_MEDIA
 import net.forevents.foreventsandroid.Util.Constants.PMANAGER_ID_USER
 import net.forevents.foreventsandroid.Util.Constants.PMANAGER_TOKEN_USER
-import net.forevents.foreventsandroid.Util.getFromPreferenceManagerTypeString
-import net.forevents.foreventsandroid.Util.logOut
-import net.forevents.foreventsandroid.Util.removeAtPreferenceManagerTypeString
 import net.forevents.foreventsandroid.presentation.EventDetail.EventDetailFragment
 import net.forevents.foreventsandroid.presentation.EventList.EventListFragment
 import net.forevents.foreventsandroid.presentation.MyEvents.MyEventsFragment
@@ -38,20 +36,16 @@ class NucleusActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener ,
     EventListFragment.OnEventClickedListener,
     EventDetailFragment.OnBookButtonClickedListenerDetailFragment,
-    MyEventsFragment.OnListFragmentInteractionListener {
+    MyEventsFragment.OnListFragmentInteractionListener,
+    EventListFragment.OnRefreshEventsListener {
 
-
-
-    override fun onListFragmentInteraction(event: AppTransactions) {
-        //Toast.makeText(this,event.toString(),Toast.LENGTH_LONG).show()
-        viewModel.getEvent(FIELDS_MEDIA,event.eventId,userId)
-    }
 
     private lateinit var mLifecycleRegistry: LifecycleRegistry
     private lateinit var viewModel : NucleusActivityVM
     private lateinit var events:List<AppEvents>
     private lateinit var userId:String
     private lateinit var token:String
+    private var preferenceSearches: PreferenceSearches?=null
 
     override fun onStart() {
         super.onStart()
@@ -65,16 +59,22 @@ class NucleusActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nucleus_activity)
+        this.title = "Eventos disponibles"
+        //Preferences
         userId=getFromPreferenceManagerTypeString(this, PMANAGER_ID_USER)!!
         token= getFromPreferenceManagerTypeString(this, PMANAGER_TOKEN_USER)!!
+
         mLifecycleRegistry = LifecycleRegistry(this)
         mLifecycleRegistry.markState(Lifecycle.State.CREATED)
 
         setSupportActionBar(toolbar)
         setUpViewModel()
-        viewModel.loadEventList(userId)
+        setUpToggle()
+        getEventList()
+    }
 
 
+    private fun setUpToggle(){
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar,
             R.string.navigation_drawer_open,
@@ -84,10 +84,33 @@ class NucleusActivity : AppCompatActivity(),
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
 
-        this.title = "Eventos disponibles"
+    private fun getEventList(){
+        preferenceSearches = getSearchPreferencesFromPManager(this)
+        var typeEventId=""
+        var locationRadius=""
+        preferenceSearches?.let {pSearches->
+            if(pSearches.favoriteEvents != null) {
+                pSearches.favoriteEvents.map { eventId-> typeEventId = typeEventId + eventId + "," }
+                typeEventId=typeEventId?.dropLast(1)
+            }else typeEventId=""
+
+            locationRadius =if(pSearches.favoriteCity != null)
+                "${pSearches.favoriteCity.AppCity.latitude},${pSearches.favoriteCity.AppCity.longitude}"
+            else
+                ""
+            locationRadius +=if(pSearches.favoriteRadius != null)
+                ",${pSearches.favoriteRadius.split("-".toRegex())[0].toInt()}"
+            else
+                ""
+        }
+        //Llamada a la carga de eventos según preferencias
+        viewModel.loadEventList(FIELDS_MEDIA,userId,typeEventId!!,locationRadius!!)
 
     }
+
+
 
     private  fun setUpViewModel(){
         viewModel = ViewModelProviders.of(this).get(NucleusActivityVM::class.java)
@@ -178,6 +201,10 @@ class NucleusActivity : AppCompatActivity(),
                 finish()
                 return true
             }
+            R.id.action_search ->{
+                Toast.makeText(this,"Pulsado Search",Toast.LENGTH_LONG).show()
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -186,7 +213,7 @@ class NucleusActivity : AppCompatActivity(),
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_gallery -> {
-                viewModel.loadEventList(userId)
+                getEventList()
             }
             R.id.nav_mis_eventos -> {
                 this.title ="Eventos Reservados"
@@ -304,6 +331,16 @@ class NucleusActivity : AppCompatActivity(),
                 R.id.content_fragment,
                 EventDetailFragment.newInstance(event)
             ).commit()    }
+    //Refreshing data, triggered by swipe action
+    override fun onSwipeRefreshEvents() {
+        getEventList()    }
+
+
+    override fun onListFragmentInteraction(event: AppTransactions) {
+        //Toast.makeText(this,event.toString(),Toast.LENGTH_LONG).show()
+        viewModel.getEvent(FIELDS_MEDIA,event.eventId,userId)
+    }
+
     private fun ñapa(){
         //TODO investigar la causa por la que si no asigno un fragment distinto al de tab's, al volver a la pantalla de login
         //Todo no puedo interactuar con ella

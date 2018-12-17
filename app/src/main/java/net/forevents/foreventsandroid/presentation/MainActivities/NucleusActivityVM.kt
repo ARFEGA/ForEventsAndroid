@@ -6,9 +6,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
+
+import net.forevents.foreventsandroid.Data.Model.Events.AppEvents
 import net.forevents.foreventsandroid.Data.Model.Transactions.ApiCreateTransaction
-import net.forevents.foreventsandroid.Data.Model.Transactions.ApiGetTransactions
 import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
 import net.forevents.foreventsandroid.presentation.servicelocator.Inject
 import retrofit2.Response
@@ -26,8 +26,8 @@ class NucleusActivityVM: BaseViewModel() {
     val getTransactionsByUserState : MutableLiveData<List<AppTransactions>> = MutableLiveData()
     val getEventState : MutableLiveData<AppEvents> = MutableLiveData()
 
-        fun loadEventList(userId:String){
-            Inject.repository.getEventsList(userId)
+    fun loadEventList(media:String,userId:String,typeEventId:String,locationRadius:String){
+        Inject.repository.getEventsList(media,userId,typeEventId,locationRadius)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe{isLoadingState.postValue(true)}

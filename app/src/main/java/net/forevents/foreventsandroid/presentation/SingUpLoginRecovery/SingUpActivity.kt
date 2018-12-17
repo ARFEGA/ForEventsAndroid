@@ -13,9 +13,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.lifecycle.*
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppCity
 import net.forevents.foreventsandroid.R
 import kotlinx.android.synthetic.main.activity_sing_up.*
+import net.forevents.foreventsandroid.Data.Model.City.AppCity
 import net.forevents.foreventsandroid.presentation.Navigator.Navigator
 
 

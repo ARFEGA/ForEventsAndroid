@@ -2,15 +2,12 @@ package net.forevents.foreventsandroid.presentation.Settings
 
 import net.forevents.foreventsandroid.Util.mvvm.BaseViewModel
 import androidx.lifecycle.MutableLiveData
-
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserEntity
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppCity
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEventType
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
+import net.forevents.foreventsandroid.Data.Model.City.AppCity
+import net.forevents.foreventsandroid.Data.Model.EventType.AppEventType
 import net.forevents.foreventsandroid.presentation.servicelocator.Inject
 import java.util.concurrent.TimeUnit
 

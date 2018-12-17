@@ -6,10 +6,15 @@ import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserEntity
-import net.forevents.foreventsandroid.Data.CreateUser.User.*
+import net.forevents.foreventsandroid.Data.Model.City.AppCity
+import net.forevents.foreventsandroid.Data.Model.CreateUser.AppCreateUser
+import net.forevents.foreventsandroid.Data.Model.EventType.AppEventType
+import net.forevents.foreventsandroid.Data.Model.Events.AppEvents
+import net.forevents.foreventsandroid.Data.Model.LoginUser.AppUser
+
 import net.forevents.foreventsandroid.Data.Model.Response.OnlyResponse
 import net.forevents.foreventsandroid.Data.Model.Transactions.ApiCreateTransaction
-import net.forevents.foreventsandroid.Data.Model.Transactions.ApiGetTransactions
+
 import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
 import net.forevents.foreventsandroid.Data.Model.UserById.AppUserById
 import net.forevents.foreventsandroid.Data.Repository.DataSource.ApiDataSource
@@ -67,9 +72,11 @@ class Repository(private val apiDataSource: ApiDataSource) {
 
     //########### EVENTS ###################
 
-    fun getEventsList(userId:String):Observable<List<AppEvents>> = apiDataSource.getEvents("name description url",userId)
+    fun getEventsList(media:String,userId:String,eventTypeId:String,locationRadius:String):Observable<List<AppEvents>> =
+        apiDataSource.getEvents(media,userId,eventTypeId, locationRadius)
 
-    fun getEvent(media:String,eventId:String,userId:String):Single<AppEvents> = apiDataSource.getEvent(media,eventId,userId)
+    fun getEvent(media:String,eventId:String,userId:String):Single<AppEvents> =
+        apiDataSource.getEvent(media,eventId,userId)
 
     //########### EVENTS TYPE ###################
 

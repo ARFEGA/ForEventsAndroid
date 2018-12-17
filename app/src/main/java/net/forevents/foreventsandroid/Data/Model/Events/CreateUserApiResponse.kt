@@ -1,7 +1,4 @@
-package net.forevents.foreventsandroid.Data.CreateUser.CreateUser
-
-import net.forevents.foreventsandroid.Data.CreateUser.User.ApiCreateUser
-import net.forevents.foreventsandroid.Data.CreateUser.User.ApiEvents
+package net.forevents.foreventsandroid.Data.Model.Events
 
 
 data class GetEventApiResponse (

@@ -5,15 +5,26 @@ package net.forevents.foreventsandroid.Data.Repository.DataSource
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
-import net.forevents.foreventsandroid.Data.CreateUser.CreateUser.*
+
 
 
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.OutUserEntityMapper
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserEntity
 import net.forevents.foreventsandroid.Data.CreateUser.User.*
+import net.forevents.foreventsandroid.Data.Model.City.AppCity
+import net.forevents.foreventsandroid.Data.Model.City.OutAppCityMapper
+import net.forevents.foreventsandroid.Data.Model.CreateUser.AppCreateUser
+import net.forevents.foreventsandroid.Data.Model.CreateUser.OutAppCreateUserMapper
+import net.forevents.foreventsandroid.Data.Model.EventType.AppEventType
+import net.forevents.foreventsandroid.Data.Model.EventType.OutAppEventTypeMapper
+import net.forevents.foreventsandroid.Data.Model.Events.AppEvents
+import net.forevents.foreventsandroid.Data.Model.Events.OutAppEventsMapper
+import net.forevents.foreventsandroid.Data.Model.LoginUser.AppUser
+import net.forevents.foreventsandroid.Data.Model.LoginUser.OutAppUserMapper
 import net.forevents.foreventsandroid.Data.Model.Response.OnlyResponse
 import net.forevents.foreventsandroid.Data.Model.Transactions.ApiCreateTransaction
 import net.forevents.foreventsandroid.Data.Model.Transactions.AppTransactions
+import net.forevents.foreventsandroid.Data.Model.Transactions.OutAppTransactionsMapper
 import net.forevents.foreventsandroid.Data.Model.UserById.AppUserById
 import net.forevents.foreventsandroid.Data.Net.UserService
 import net.forevents.foreventsandroid.presentation.servicelocator.Inject
@@ -31,10 +42,10 @@ class ApiDataSource(private val userService: UserService,
                     private val outAppUserMapper: OutAppUserMapper,
                     private val outAppCreateUserMapper: OutAppCreateUserMapper,
                     private val outAppEventsMapper: OutAppEventsMapper,
-                    private val outAppCityMapper:OutAppCityMapper,
-                    private val outAppEventTypeMapper:OutAppEventTypeMapper,
+                    private val outAppCityMapper: OutAppCityMapper,
+                    private val outAppEventTypeMapper: OutAppEventTypeMapper,
                     private val outAppUserByIdMapper: OutAppUserByIdMapper,
-                    private val outAppTransactionsMapper:OutAppTransactionsMapper
+                    private val outAppTransactionsMapper: OutAppTransactionsMapper
 ): DataSource {
 
 
@@ -112,8 +123,8 @@ class ApiDataSource(private val userService: UserService,
 
     //################  EVENTS  #####################
 
-    override fun getEvents(media:String,userId:String): Observable<List<AppEvents>> =
-            userService.getListEvents(media,userId)
+    override fun getEvents(media:String,userId:String,eventTypeId:String,locationRadius:String): Observable<List<AppEvents>> =
+            userService.getListEvents(media,userId,eventTypeId,locationRadius)
                 .map{
                 outAppEventsMapper.transformList(it.result)
             }

@@ -12,13 +12,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_update_profile.*
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppCity
+
+import net.forevents.foreventsandroid.Data.Model.City.AppCity
 import net.forevents.foreventsandroid.Data.Model.UserById.AppUserById
 import net.forevents.foreventsandroid.R
 import net.forevents.foreventsandroid.Util.Constants.PMANAGER_ID_USER
@@ -170,6 +172,7 @@ class UpdateUserFragment : Fragment() ,LifecycleOwner{
                     if(it.ok) {
                         updateForm(it)
                         apiDataUser=it
+                        Toast.makeText(activity!!,"Perfil actualizado",Toast.LENGTH_LONG).show()
                     }
                     else
                         showDialog(activity!!,"ERROR","No se ha podido obtener la información, intentelo nuevamente.")

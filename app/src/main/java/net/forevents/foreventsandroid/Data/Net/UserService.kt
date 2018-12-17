@@ -6,7 +6,11 @@ import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserApiResponse
-import net.forevents.foreventsandroid.Data.CreateUser.User.*
+import net.forevents.foreventsandroid.Data.Model.City.ApiCity
+import net.forevents.foreventsandroid.Data.Model.CreateUser.ApiCreateUser
+import net.forevents.foreventsandroid.Data.Model.EventType.ApiEventType
+import net.forevents.foreventsandroid.Data.Model.Events.ApiEvents
+import net.forevents.foreventsandroid.Data.Model.LoginUser.ApiUser
 import net.forevents.foreventsandroid.Data.Model.Response.OnlyResponse
 import net.forevents.foreventsandroid.Data.Model.Transactions.ApiCreateTransaction
 import net.forevents.foreventsandroid.Data.Model.Transactions.ApiGetTransactions
@@ -42,9 +46,15 @@ interface UserService {
 
 //#####################  EVENTS   ########################################
 
-    @GET("events")
-    fun getListEvents(@Query("media") media: String,@Query("userId") userId:String) : Observable<ApiEvents>
 
+
+
+    @GET("events")
+    fun getListEvents(@Query("media") media: String,
+                      @Query("userId") userId:String,
+                      @Query("event_typeId") eventTypeId:String,
+                      @Query("location") locationRadius:String) : Observable<ApiEvents>
+                                            //41.50368,-5.743778,5000
     @GET("events")
     fun getEvent(@Query("media") media: String,
                  @Query("id") eventId:String,

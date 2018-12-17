@@ -7,8 +7,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import net.forevents.foreventsandroid.Data.CreateUser.RandomUser.UserEntity
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
+
+import net.forevents.foreventsandroid.Data.Model.Events.AppEvents
 import net.forevents.foreventsandroid.presentation.servicelocator.Inject
 
 
@@ -18,8 +18,8 @@ class EventListVM: BaseViewModel() {
     val eventListState : MutableLiveData<List<AppEvents>> = MutableLiveData()
     val isLoadingState : MutableLiveData<Boolean> = MutableLiveData()
 
-        fun loadEventList(userId:String){
-            Inject.repository.getEventsList(userId)
+        fun loadEventList(media:String,userId:String,typeEventId:String,locationRadius:String){
+            Inject.repository.getEventsList(media,userId,typeEventId,locationRadius)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe{isLoadingState.postValue(true)}

@@ -1,44 +1,33 @@
 package net.forevents.foreventsandroid.presentation.Settings
 
-import android.content.Context
+
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
-import android.text.Selection.setSelection
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_calendar_event.view.*
 import kotlinx.android.synthetic.main.fragment_settings.*
-import kotlinx.android.synthetic.main.nav_header_nucleus_activity.view.*
-import kotlinx.android.synthetic.main.toast_bienvenida.view.*
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppCity
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEventType
+import net.forevents.foreventsandroid.Data.Model.City.AppCity
 import net.forevents.foreventsandroid.Data.Model.DataCity
+import net.forevents.foreventsandroid.Data.Model.EventType.AppEventType
 import net.forevents.foreventsandroid.Data.Model.PreferenceSearches
 import net.forevents.foreventsandroid.R
-import net.forevents.foreventsandroid.R.id.*
+import net.forevents.foreventsandroid.Util.*
 import net.forevents.foreventsandroid.Util.Constants.PMANAGER_FAVORITE_PARAMETERS_SEARCH
-import net.forevents.foreventsandroid.Util.getFromPreferenceManagerTypeString
-import net.forevents.foreventsandroid.Util.removeAtPreferenceManagerTypeString
-import net.forevents.foreventsandroid.Util.setToPreferenceManagerTypeString
-import net.forevents.foreventsandroid.Util.stringNullToString
 import org.jetbrains.anko.forEachChild
-import org.jetbrains.anko.internals.AnkoInternals.addView
+
 
 
 class SettingsFragment: Fragment() {
     companion object {
-        private  val gson = Gson()
+        val gson=Gson()
 
     }
     private lateinit var viewModel : SettingsListVM
@@ -55,7 +44,7 @@ class SettingsFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        PreferenceSearchesToFromPManager = getPreferencesFromPManager()
+        PreferenceSearchesToFromPManager = getSearchPreferencesFromPManager(activity!!)
         setUpViewModel()
     }
 
@@ -64,25 +53,6 @@ class SettingsFragment: Fragment() {
         return inflater.inflate(R.layout.fragment_settings,container,false)
     }
 
-
-    override fun onResume() {
-        super.onResume()
-        setupView()
-    }
-
-    private fun getPreferencesFromPManager():PreferenceSearches?{
-        jsonToFromPManager = getFromPreferenceManagerTypeString(activity!!, PMANAGER_FAVORITE_PARAMETERS_SEARCH)
-        return gson.fromJson(jsonToFromPManager,PreferenceSearches::class.java)
-    }
-
-
-
-    private fun setupView(){
-
-
-    }
-
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -90,20 +60,20 @@ class SettingsFragment: Fragment() {
             removeAtPreferenceManagerTypeString(activity!!, PMANAGER_FAVORITE_PARAMETERS_SEARCH)
             savePreferenceSearches()
         }
+        toggle_radius_button.setOnClickListener {
+            toggle_radius_button.selectedToggles()[0].title!!.split("-".toRegex())[0]
+        }
 
-        //Toggle radius
+        //AutoCompleteText and Toggle
 
-
-
-        //AutoCompleteText
-
-        getPreferencesFromPManager()?.let{
-            it.favoriteCity?.let {
-                city_autoComplete_TextView.setTag(PreferenceSearchesToFromPManager?.favoriteCity?.id.toString())
-                city_autoComplete_TextView.setText(PreferenceSearchesToFromPManager?.favoriteCity?.cityAndProvince.toString())
+        PreferenceSearchesToFromPManager?.let{pManager ->
+            pManager.favoriteCity?.let {city->
+                city_autoComplete_TextView.setTag(city.AppCity as AppCity)
+                city_autoComplete_TextView.setText(city.cityAndProvince.toString())
             }
-            it.favoriteRadius?.let{
-                toggle_radius_button.setToggled(it.toInt(),true)
+            pManager.favoriteRadius?.let{ radius ->
+                Toast.makeText(activity!!,radius.split("-".toRegex())[1].toInt(),Toast.LENGTH_LONG).show()
+                toggle_radius_button.setToggled(radius.split("-".toRegex())[1].toInt(),true)
             }
         }
         adapter = ArrayAdapter(context, android.R.layout.simple_gallery_item, listCities)
@@ -138,10 +108,12 @@ class SettingsFragment: Fragment() {
         }
 
         city_autoComplete_TextView.setOnDismissListener {
+
             //Toast.makeText(activity!!, "Suggestion closed", Toast.LENGTH_LONG).show()
         }
         city_autoComplete_TextView.setOnItemClickListener { parent, view, position, id ->
-            city_autoComplete_TextView.tag = cities[position].id
+            city_autoComplete_TextView.tag = (cities[position]) as AppCity
+            //(activity as LoginActivity).hideKeyboard(view)
         }
         root_layout.setOnClickListener {
 
@@ -164,25 +136,29 @@ class SettingsFragment: Fragment() {
     }
 
     private fun savePreferenceSearches() {
+        //Favorite city
+        val auxCity = if (city_autoComplete_TextView.tag != null)
+            DataCity(city_autoComplete_TextView.tag as AppCity, city_autoComplete_TextView.text.toString())
+        else null
+        //Favorite radius  either from coordinates favorite city or current position
+        val auxTypeEvent = if (toggle_radius_button.selectedToggles().size != 0)
+            "${toggle_radius_button.selectedToggles()[0].title!!.split("-".toRegex())[0].toInt() * 1000}-${toggle_radius_button.selectedToggles()[0].id}"
+        else null
 
-        PreferenceSearchesToFromPManager = PreferenceSearches(
-            if (city_autoComplete_TextView.tag != null) DataCity(city_autoComplete_TextView.tag.toString(), city_autoComplete_TextView.text.toString()) else null,
-            if (toggle_radius_button.selectedToggles().size != 0) toggle_radius_button.selectedToggles()[0].id.toString() else null,
-            favoriteEventsSelected()
-        )
+        PreferenceSearchesToFromPManager = PreferenceSearches(auxCity,auxTypeEvent, favoriteEventsSelected())
         jsonToFromPManager = gson.toJson(PreferenceSearchesToFromPManager)
         setToPreferenceManagerTypeString(activity!!,PMANAGER_FAVORITE_PARAMETERS_SEARCH,jsonToFromPManager!!)
         Toast.makeText(activity!!,"Preferencias guardadas",Toast.LENGTH_LONG).show()
     }
 
-    private fun favoriteEventsSelected():List<String>{
+    private fun favoriteEventsSelected():List<String>?{
         val listEvents = emptyList<String>().toMutableList()
         radio_group_button_event_type.forEachChild {
             if((it as CheckBox).isChecked()) {
                 listEvents.add(it.tag.toString())
             }
         }
-        return listEvents
+        return if(listEvents.isEmpty())  null else listEvents
     }
 
     private  fun setUpViewModel(){

@@ -5,6 +5,11 @@
     <item android:id="@+id/action_logout"
           android:title="LogOut"
           android:icon="@drawable/ic_exit_to_app_white_24dp"
+          android:orderInCategory="200"
+          app:showAsAction="never|ifRoom|collapseActionView"/>
+    <item android:id="@+id/action_search"
+          android:title="Search"
+          android:icon="@drawable/ic_menu_search_white_24dp"
           android:orderInCategory="100"
           app:showAsAction="never|ifRoom|collapseActionView"/>
 </menu>

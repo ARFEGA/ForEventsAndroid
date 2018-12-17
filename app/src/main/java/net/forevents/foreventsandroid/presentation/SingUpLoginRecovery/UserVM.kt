@@ -7,9 +7,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppCity
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppCreateUser
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppUser
+
+
+
+import net.forevents.foreventsandroid.Data.Model.City.AppCity
+import net.forevents.foreventsandroid.Data.Model.CreateUser.AppCreateUser
+import net.forevents.foreventsandroid.Data.Model.LoginUser.AppUser
+
 import net.forevents.foreventsandroid.Data.Model.Response.OnlyResponse
 import net.forevents.foreventsandroid.Data.Model.UserById.AppUserById
 import net.forevents.foreventsandroid.Util.closeApp

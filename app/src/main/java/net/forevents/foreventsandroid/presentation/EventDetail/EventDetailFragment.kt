@@ -27,7 +27,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import net.forevents.foreventsandroid.Data.CreateUser.User.AppEvents
+
+import net.forevents.foreventsandroid.Data.Model.Events.AppEvents
 import net.forevents.foreventsandroid.R
 import net.forevents.foreventsandroid.Util.Constants
 import net.forevents.foreventsandroid.Util.getFromPreferenceManagerTypeString

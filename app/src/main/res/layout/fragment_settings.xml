@@ -22,7 +22,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:gravity="center_horizontal"
             android:background="#a8000000"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:clickable="true"
+            android:focusableInTouchMode="true">
 
         <TextView
                 android:layout_height="wrap_content"
