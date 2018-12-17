@@ -86,7 +86,7 @@ class EventListFragment : Fragment(), LifecycleOwner {
         //It's triggered on bottom reached
         adapter.setterOnBottomReachedListener(object : OnBottomReachedListener {
             override fun onBottomReached(position: Int) {
-                //onRefreshEventsListener?.onSwipeRefreshEvents()
+                onRefreshEventsListener?.onSwipeRefreshEvents()
                 Toast.makeText(activity!!,"I'm on the bottom list",Toast.LENGTH_LONG).show()
             }
         })
