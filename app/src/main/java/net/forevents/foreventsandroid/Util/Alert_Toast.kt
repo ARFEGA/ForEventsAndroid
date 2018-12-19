@@ -1,14 +1,16 @@
 package net.forevents.foreventsandroid.Util
 
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
-import android.widget.Toast
-
+import android.graphics.Color.rgb
+import android.view.Gravity
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
 import net.forevents.foreventsandroid.R
+import org.jetbrains.anko.matchParent
 
 
 fun ShowAlert(context: Context, title:String, msg:String)
@@ -22,7 +24,7 @@ fun ShowAlert(context: Context, title:String, msg:String)
 fun showDeleteDialog_(context: Context){
     // Late initialize an alert dialog object
     lateinit var dialog:AlertDialog
-    context.setTheme(R.style.AlertDialogDeleteUser)
+    //context.setTheme(R.style.AlertDialogDeleteUser)
     // Initialize a new instance of alert dialog builder object
     val builder = AlertDialog.Builder(context)//ContextThemeWrapper(context, R.style.AlertDialogCustom))
 
@@ -69,20 +71,65 @@ fun showDialog(context: Context, title:String, msg:String) {
     val builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AlertDialogCustom))
 
 
+
+
     with(builder) {
-        setTitle("BIENVENIDO")
-        setMessage("Accede y disfruta ${msg} ")
+        setTitle(title)
+        setMessage(msg)
+        setPositiveButton("ok", null)
+        //setPositiveButtonIcon(context.resources.getDrawable(R.drawable.logo_grande))
+        //setNegativeButton("CANCEL", null)
+        //setNeutralButton("ok", null)
+        setIcon(R.drawable.logo_2)
+    }
+    val alertDialog = builder.create()
+    val button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+    with(button) {
+        setBackgroundColor(android.graphics.Color.rgb(0, 0, 0))
+        setPadding(10, 10, 10, 10)
+        setTextColor(Color.YELLOW)
+    }
+
+
+
+
+    alertDialog.show()
+
+
+
+}
+
+fun showDialogRecoveryPwd(context: Context, title:String, msg:String,finishedActivity:()-> Unit){
+    val builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AlertDialogCustom))
+
+    val resultDialogClickListener = DialogInterface.OnClickListener{_,which ->
+        when(which){
+            DialogInterface.BUTTON_NEUTRAL ->  finishedActivity()  //Es la lambda pasada
+        }
+    }
+
+    with(builder) {
+
+        setTitle(title)
+        setMessage(msg)
         //setPositiveButton(" ", null)
         //setPositiveButtonIcon(context.resources.getDrawable(R.drawable.logo_grande))
         //setNegativeButton("CANCEL", null)
-        //setNeutralButton("NEUTRAL", null)
-        //setIcon(R.drawable.logo_2)
-
-
+        setNeutralButton("OK", resultDialogClickListener)
+        setIcon(R.drawable.logo_2)
 
     }
     val alertDialog = builder.create()
+
     alertDialog.show()
+    val button = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL)
+    with(button) {
+
+        setBackgroundColor(Color.BLUE)
+        elevation=10f
+        setTextSize(20f)
+        setTextColor(Color.WHITE)
+    }
 
 
     //val button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
@@ -91,5 +138,7 @@ fun showDialog(context: Context, title:String, msg:String) {
     //    setPadding(10, 10, 10, 10)
     // setTextColor(Color.WHITE)
 
+
     //}
+
 }

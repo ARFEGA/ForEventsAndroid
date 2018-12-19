@@ -294,7 +294,7 @@ class NucleusActivity : AppCompatActivity(),
     fun showDeleteDialog(context: Context){
         // Late initialize an alert dialog object
         lateinit var dialog: androidx.appcompat.app.AlertDialog
-        context.setTheme(R.style.AlertDialogDeleteUser)
+        //context.setTheme(R.style.AlertDialogDeleteUser)
         // Initialize a new instance of alert dialog builder object
         val builder = androidx.appcompat.app.AlertDialog.Builder(context)
         //ContextThemeWrapper(context, R.style.AlertDialogCustom))

@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
@@ -13,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import net.forevents.foreventsandroid.R
 import net.forevents.foreventsandroid.Util.showDialog
 import kotlinx.android.synthetic.main.activity_recovery_password.*
-
+import net.forevents.foreventsandroid.Util.showDialogRecoveryPwd
 
 
 class RecoveryPasswordActivity : AppCompatActivity(),LifecycleOwner {
@@ -51,7 +52,7 @@ class RecoveryPasswordActivity : AppCompatActivity(),LifecycleOwner {
 
     fun hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 
@@ -63,8 +64,9 @@ class RecoveryPasswordActivity : AppCompatActivity(),LifecycleOwner {
     private fun BindEvents(){
         userViewModel.recoveryPasswordState.observe(this, Observer { userCreated->
             userCreated?.let {
-                showDialog(this,"'CREATE' Datos desde API ","El EMAIL: ${it}")
-                finish()
+                showDialogRecoveryPwd(this,"Recuperación de contraseña","Acceda a la cuenta de correo facilitada, donde podrá recuperar su contraseña",{finish()})
+                Toast.makeText(this,"Acceda a la cuenta de correo facilitada, donde podrá recuperar su contraseña",Toast.LENGTH_LONG).show()
+
             }
         })
     }
