@@ -10,7 +10,7 @@
 <img src="https://github.com/ARFEGA/ForEventsAndroid/blob/master/gif/create_profile.gif" width="200" height="400" />
 
 ### **Login**
-<img src="https://github.com/ARFEGA/ForEventsAndroid/blob/master/git/login.gif" width="200" height="400" />
+<img src="https://github.com/ARFEGA/ForEventsAndroid/blob/master/gif/login.gif" width="200" height="400" />
 
 ### **Preferencias de busquedas**
 <img src="https://github.com/ARFEGA/ForEventsAndroid/blob/master/gif/2_configuration_search.gif" width="200" height="400" />
