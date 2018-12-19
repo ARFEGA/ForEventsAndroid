@@ -15,9 +15,6 @@
 ### **Preferencias de busquedas**
 <img src="https://github.com/ARFEGA/ForEventsAndroid/blob/master/gif/2_configuration_search.gif" width="200" height="400" />
 
-### **Eliminación de cuenta**
-<img src="https://github.com/ARFEGA/ForEventsAndroid/blob/master/gif/delete_profile.gif" width="200" height="400" />
-
 ### **Reserva de evento**
 <img src="https://github.com/ARFEGA/ForEventsAndroid/blob/master/gif/remove_booking.gif" width="200" height="400" />
 
@@ -32,6 +29,9 @@
 
 ### **Recuperación de contraseña**
 <img src="https://github.com/ARFEGA/ForEventsAndroid/blob/master/gif/password_recovery.gif" width="200" height="400" />
+
+### **Eliminación de cuenta**
+<img src="https://github.com/ARFEGA/ForEventsAndroid/blob/master/gif/delete_profile.gif" width="200" height="400" />
 
 
 
